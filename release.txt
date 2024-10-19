@@ -1,0 +1,13 @@
+docker buildx build --platform linux/amd64 -t nodo-ui-dev:latest . --load
+
+
+docker run -d -p 3000:3000 --name my-nextjs-container nodo-ui-dev:latest
+
+az login
+az acr login --name acrnododev
+
+docker tag nodo-ui-dev:latest acrnododev.azurecr.io/nodo-ui-dev:latest
+docker tag nodo-ui-dev:latest acrnododev.azurecr.io/nodo-ui-dev:0.0.0
+
+docker push acrnododev.azurecr.io/nodo-ui-dev:latest
+docker push acrnododev.azurecr.io/nodo-ui-dev:0.0.0

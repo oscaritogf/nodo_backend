@@ -49,14 +49,14 @@ const Login = () => {
     }
 
     return (
-        <div className="flex min-h-screen items-center justify-center bg-gradient-to-b from-blue-400 to-blue-300 ">
+        <div className="flex min-h-screen items-center justify-center bg-gradient-to-b from-green-400 to-green-300 ">
             <div className="w-full max-w-md rounded-lg bg-white p-6 shadow-md">
             { warningMessage.length > 0 && <ErrorNotification errors={warningMessage} /> }
                 <h1 className="text-3xl font-bold text-center">Bienvenido a Nodo </h1>
                 <h3 className="font-bold text-center">Ingresa tus credenciales</h3>
                 <form className="mt-6">
                     <div>
-                        <label htmlFor="email" className="block text-xs font-semibold text-gray-600 uppercase">
+                        <label htmlFor="email" className="block text-xs font-semibold text-orange-600 uppercase">
                             Correo
                         </label>
                         <input
