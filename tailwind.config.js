@@ -10,7 +10,10 @@ module.exports = {
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
+        'custom-gray': '#27403D',
+        'custom-fondoInput': '#FAFAFA',
       },
+      
     },
   },
   plugins: [],

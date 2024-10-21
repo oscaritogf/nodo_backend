@@ -17,7 +17,8 @@ export function LoginFormValidator(
     if (!emailPattern.test(email)) {
         warnings.push('Ingresa un correo valido');
     }
-
+    
+    
     if (password.length < 6) {
         warnings.push('La contraseña debe tener al menos 6 caracteres');
     }
@@ -33,6 +34,7 @@ export function LoginFormValidator(
     if (/(012|123|234|345|456|567|678|789|890)/.test(password)) {
         warnings.push('La contraseña no puede tener secuencias de números');
     }
+
 
     return warnings;
 }
