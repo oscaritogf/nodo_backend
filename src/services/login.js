@@ -5,7 +5,7 @@ import settings from "./settings";
 export async function LoginUser(userLogin) {
     try {
         
-        const response = await fetch(`${ settings.domain }/login/custom`, {
+        const response = await fetch(`${ settings.local }/login/custom`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
