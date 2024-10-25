@@ -5,7 +5,7 @@ import settings from "./settings";
 export async function RegisterUser(userData) {
     try {
 
-        const response = await fetch(`${ settings.domain }/registro-usuarios`, {
+        const response = await fetch(`${ settings.local}/registro-usuarios`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
