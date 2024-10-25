@@ -1,11 +1,11 @@
 
 //src/services/registre
-//import settings from "./settings";
+import settings from "./settings";
 
 export async function RegisterUser(userData) {
     try {
 
-        const response = await fetch('http://localhost:3000/api/registro-usuarios', {
+        const response = await fetch(`${ settings.domain }/registro-usuarios`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

@@ -1,16 +1,18 @@
 //src/services/login
-//import settings from "./settings";
+
+import settings from "./settings";
 
 export async function LoginUser(userLogin) {
     try {
         
-        const response = await fetch('http://localhost:3000/api/login/custom', {
+        const response = await fetch(`${ settings.domain }/login/custom`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 'Cache-Control': 'no-cache'
             },
-            body: JSON.stringify(userLogin)
+            body: JSON.stringify(userLogin),
+            credentials: 'include'
         });
 
         if (!response.ok) {
