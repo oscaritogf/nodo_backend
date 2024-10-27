@@ -10,8 +10,9 @@ export default function Inicio() {
 
   return (
     <div className="mb-3">
-      <h3 className="text-lg font-medium text-gray-700">Componente de Inicio</h3>
+      
       <ToggleComponent />
+      <h3 className="text-lg font-medium text-gray-700">Componente de Inicio</h3>
     </div>
   );
 }
