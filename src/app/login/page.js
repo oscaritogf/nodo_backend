@@ -33,7 +33,7 @@ const Login = () => {
             setWarningMessage([response.error]);
           } else {
             localStorage.setItem("token", response.idToken);
-            router.push("/");
+            router.push("/inicio");
           }
         })
         .catch(() => {
@@ -57,7 +57,7 @@ const Login = () => {
       }}
     >
       <div
-        className="w-full lg:w-1/3 items-center relative mx-auto"
+        className="w-full lg:w-1/3 items-center relative mx-auto "
         style={{ background: "rgba(255, 255, 255)" }}
       >
         <div className="relative h-1/4 p-5 ">

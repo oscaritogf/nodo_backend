@@ -1,4 +1,5 @@
-import { XCircleIcon } from '@heroicons/react/20/solid'
+import { XCircleIcon } from '@heroicons/react/outline';
+
 
 export default function ErrorNotification({
     errors
