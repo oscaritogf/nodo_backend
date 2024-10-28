@@ -1,28 +1,21 @@
-
-//src/services/registre
-import settings from "./settings";
+import axios from 'axios';
+import settings from './settings';
 
 export async function RegisterUser(userData) {
     try {
-
-        const response = await fetch(`${ settings.local}/registro-usuarios`, {
-            method: 'POST',
+        const response = await axios.post(`${settings.domain}/user/register`, userData, {
             headers: {
                 'Content-Type': 'application/json',
-                
             },
-            body: JSON.stringify(userData),
         });
 
-        if (!response.ok) {
-            const errorData = await response.json();
-            throw new Error(`Error: ${response.status} - ${errorData.error || 'Ocurrió un error'}`);
-        }
-
-        const data = await response.json();
-        return data;
+        return response.data;
     } catch (error) {
         console.error("Error en RegisterUser:", error);
-        throw error;  
+        if (error.response && error.response.data) {
+            throw new Error(error.response.data.error || 'Ocurrió un error');
+        } else {
+            throw new Error('Error al conectar con el servidor.');
+        }
     }
 }
