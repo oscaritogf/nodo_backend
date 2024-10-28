@@ -6,7 +6,6 @@ export async function LoginUser(userLogin) {
         const response = await axios.post(`${settings.domain}/user/login`, userLogin, {
             headers: {
                 'Content-Type': 'application/json',
-                'Cache-Control': 'no-cache'
             }
         });
 

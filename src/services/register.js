@@ -2,7 +2,7 @@ import axios from 'axios';
 import settings from './settings';
 
 export async function RegisterUser(userData) {
-    try {
+    try { 
         const response = await axios.post(`${settings.domain}/user/register`, userData, {
             headers: {
                 'Content-Type': 'application/json',

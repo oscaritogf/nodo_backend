@@ -88,7 +88,7 @@ const Register = () => {
                                 <form className="flex flex-col mt-auto" onSubmit={handleSubmit}>
                                     <div>
                                         <label htmlFor="nombreCompleto" className="block text-xs font-semibold text-custom-gray mb-4">
-                                            Nombre Completo
+                                            Nombre 
                                         </label>
                                         <input
                                             id="nombreCompleto"
@@ -105,7 +105,7 @@ const Register = () => {
 
                                     <div>
                                         <label htmlFor="apellidoCompleto" className="block text-xs font-semibold text-custom-gray mb-4">
-                                            Apellido Completo
+                                            Apellido 
                                         </label>
                                         <input
                                             id="apellidoCompleto"
