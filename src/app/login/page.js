@@ -90,7 +90,7 @@ const Login = () => {
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       placeholder="Ingresa un correo válido"
-                      className="w-full p-4 mt-1 rounded-md bg-custom-fondoInput"
+                      className="w-full p-4 mt-1 rounded-md bg-custom-fondoInput text-custom-gray"
                       required
                       style={{ boxShadow: '0 1px 10px rgba(0, 0, 0, 0.2)' }}
                     />
@@ -106,7 +106,7 @@ const Login = () => {
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
                       placeholder="Ingresa tu contraseña"
-                      className="w-full p-4 mt-1 rounded-md bg-custom-fondoInput"
+                      className="w-full p-4 mt-1 rounded-md bg-custom-fondoInput text-custom-gray"
                       required
                       style={{ boxShadow: '0 1px 10px rgba(0, 0, 0, 0.2)' }}
                     />

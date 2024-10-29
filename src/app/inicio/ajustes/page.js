@@ -19,8 +19,8 @@ const menuItems = [
 
 export default function Ajustes() {
   return (
-    <div className="p-4">
-      <h2 className="text-lg font-bold mb-4">Menu</h2>
+    <div className="p-4 text-custom-gray">
+      <div className="text-lg font-bold mb-4">Menu</div>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
         {menuItems.map(([href, iconKey, title, description], index) => {
           const Icon = icons[iconKey]; // Accedemos al ícono desde el objeto de íconos

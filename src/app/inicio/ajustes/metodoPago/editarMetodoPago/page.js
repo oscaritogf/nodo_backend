@@ -2,7 +2,7 @@ import { FaCreditCard, FaCalendarAlt } from 'react-icons/fa';
 
 export default function EditarMetodoDePago() {
   return (
-    <div className="p-4">
+    <div className="p-4 text-custom-gray">
       <h2 className="text-lg font-bold mb-4">Editar Método de Pago</h2>
       <form className="bg-white p-6 rounded-lg shadow-lg">
         <div className="mb-4">

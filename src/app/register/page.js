@@ -15,13 +15,13 @@ const Register = () => {
     const [nombreCompleto, setNombreCompleto] = useState('');
     const [apellidoCompleto, setApellidoCompleto] = useState('');
     const [warningMessage, setWarningMessage] = useState([]);
-    const [showPassword, setShowPassword] = useState(false); // Estado para mostrar/ocultar contraseña
+    const [showPassword, setShowPassword] = useState(false);
 
-    // Validar los nombres para que solo se puedan escribir letras
+    
     const handleNameKeyPress = (e) => {
-        const regex = /^[A-Za-zÀ-ÿ\s]*$/; // Solo permite letras y espacios
+        const regex = /^[A-Za-zÀ-ÿ\s]*$/; 
         if (!regex.test(e.key)) {
-            e.preventDefault(); // Evita que se ingresen caracteres inválidos
+            e.preventDefault();
         }
     };
 
@@ -97,7 +97,7 @@ const Register = () => {
                                             onChange={(e) => setNombreCompleto(e.target.value)}
                                             onKeyDown={handleNameKeyPress} // Bloquear entrada de números/caracteres especiales
                                             placeholder="Ingresa tu nombre completo"
-                                            className="w-full p-4 mt-1 rounded-md bg-custom-fondoInput mb-9"
+                                            className="w-full p-4 mt-1  bg-custom-fondoInput mb-9  text-custom-gray"
                                             required
                                             style={{ boxShadow: '0 1px 10px rgba(0, 0, 0, 0.2)' }}
                                         />
@@ -114,7 +114,7 @@ const Register = () => {
                                             onChange={(e) => setApellidoCompleto(e.target.value)}
                                             onKeyDown={handleNameKeyPress} // Bloquear entrada de números/caracteres especiales
                                             placeholder="Ingresa tu apellido completo"
-                                            className="w-full p-4 mt-1 rounded-md bg-custom-fondoInput mb-9"
+                                            className="w-full p-4 mt-1 rounded-md bg-custom-fondoInput mb-9 text-custom-gray"
                                             required
                                             style={{ boxShadow: '0 1px 10px rgba(0, 0, 0, 0.2)' }}
                                         />
@@ -130,7 +130,7 @@ const Register = () => {
                                             value={email}
                                             onChange={(e) => setEmail(e.target.value)}
                                             placeholder="Ingresa un correo válido"
-                                            className="w-full p-4 mt-1 rounded-md bg-custom-fondoInput mb-9"
+                                            className="w-full p-4 mt-1 rounded-md bg-custom-fondoInput mb-9 text-custom-gray"
                                             required
                                             style={{ boxShadow: '0 1px 10px rgba(0, 0, 0, 0.2)' }}
                                         />
@@ -146,7 +146,7 @@ const Register = () => {
                                             value={password}
                                             onChange={(e) => setPassword(e.target.value)}
                                             placeholder="Ingresa tu contraseña"
-                                            className="w-full p-4 mt-1 rounded-md bg-custom-fondoInput"
+                                            className="w-full p-4 mt-1 rounded-md bg-custom-fondoInput text-custom-gray "
                                             required
                                             style={{ boxShadow: '0 1px 10px rgba(0, 0, 0, 0.2)' }}
                                         />

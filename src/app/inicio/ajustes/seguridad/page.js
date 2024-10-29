@@ -1,6 +1,6 @@
 export default function Seguridad() {
   return (
-    <div className="flex flex-col  p-6 pb-20 lg:max-w-lg lg:mx-auto lg:pt-10"> 
+    <div className="flex flex-col  p-6 pb-20 lg:max-w-lg lg:mx-auto lg:pt-10 text-custom-gray"> 
       <div>
         <h2 className="text-lg font-semibold text-custom-gray mb-4 text-center lg:text-left">Administra la seguridad de tu cuenta</h2>
 

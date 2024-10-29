@@ -3,7 +3,7 @@ import { FaCreditCard, FaEdit } from 'react-icons/fa';
 
 export default function MetodosDePago() {
   return (
-    <div className="p-4">
+    <div className="p-4 text-custom-gray">
       <h2 className="text-lg font-bold mb-4">Métodos de Pago</h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
         
