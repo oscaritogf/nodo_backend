@@ -1,4 +1,5 @@
 // Asegúrate de que esto esté en el mismo archivo donde tienes los otros componentes
+'use client'
 const SeguridadForm = () => {
     return (
       <div className="p-4">

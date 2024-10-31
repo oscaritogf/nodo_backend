@@ -1,4 +1,4 @@
-'use client';
+
 import { useState } from 'react';
 import { FaShieldAlt, FaLock, FaCreditCard, FaFileAlt } from 'react-icons/fa'; 
 import SeguridadForm from './SeguridadForm'; // Asegúrate de tener este componente correctamente

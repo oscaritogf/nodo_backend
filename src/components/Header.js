@@ -1,4 +1,4 @@
-import React from 'react';
+'use client'
 import { FaBars } from 'react-icons/fa';
 
 const Header = ({ toggleSidebar, isSidebarOpen, title, userImage }) => {

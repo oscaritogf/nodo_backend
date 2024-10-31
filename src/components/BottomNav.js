@@ -1,3 +1,4 @@
+'use client'
 import React from 'react';
 import { HomeIcon, ShoppingBagIcon, BellIcon } from '@heroicons/react/outline';
 

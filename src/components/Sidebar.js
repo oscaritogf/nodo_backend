@@ -1,3 +1,4 @@
+'use client'
 import Link from 'next/link';
 import { FaHome, FaUser, FaCog, FaSignOutAlt } from 'react-icons/fa';
 
