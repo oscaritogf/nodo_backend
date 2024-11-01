@@ -11,8 +11,8 @@ export async function LoginUser(userLogin) {
                 'Content-Type': 'application/json',
                 'Cache-Control': 'no-cache'
             },
-            body: JSON.stringify(userLogin),
-            credentials: 'include'
+            body: JSON.stringify(userLogin)
+            
         });
 
         if (!response.ok) {
