@@ -32,8 +32,10 @@ const Login = () => {
           if (response.error) {
             setWarningMessage([response.error]);
           } else {
+
             localStorage.setItem("token", response.idToken);
             router.push("/inicio");
+            
           }
         })
         .catch(() => {

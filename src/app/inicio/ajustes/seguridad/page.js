@@ -1,3 +1,4 @@
+
 export default function Seguridad() {
   return (
     <div className="flex flex-col  p-6 pb-20 lg:max-w-lg lg:mx-auto lg:pt-10 text-custom-gray"> 
@@ -14,7 +15,7 @@ export default function Seguridad() {
               type="password"
               placeholder="Ingresa su contraseña actual"
               className="w-full p-4 mt-1 rounded-md bg-custom-fondoInput"
-              style={{ boxShadow: '0 1px 10px rgba(0, 0, 0, 0.2)' }}
+              style={{boxShadow: '0 1px 10px rgba(0, 0, 0, 0.2)' }}
             />
           </div>
 
@@ -33,7 +34,7 @@ export default function Seguridad() {
 
           <div className="mb-6">
             <label htmlFor="confirmPassword" className="block text-xs font-semibold text-custom-gray mb-2 lg:text-base">
-              Confirme nueva contraseña:
+              Confirme nueva contraseña 1234:
             </label>
             <input
               id="confirmPassword"
