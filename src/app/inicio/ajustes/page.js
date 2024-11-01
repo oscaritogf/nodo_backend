@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { FaShieldAlt, FaLock, FaCreditCard, FaFileAlt } from 'react-icons/fa';
 import SocialFooter from '@/components/SocialFooter';
+import Card from '@/components/Card';
 // Íconos disponibles
 const icons = {
   FaShieldAlt,
