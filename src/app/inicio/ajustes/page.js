@@ -22,11 +22,8 @@ export default function Ajustes() {
   return (
     <div className="p-4 text-custom-gray h-full flex flex-col h-scree">
 
-
-
-
       <div  className="h-4/5">
-              <div className="text-lg font-bold mb-4">Menu</div>
+              <div className="text-lg font-bold mb-4 ">Menu</div>
               <div className="grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-1 xl:grid-cols-1 gap-9 ">
                 {menuItems.map(([href, iconKey, title, description], index) => {
                   const Icon = icons[iconKey]; // Accedemos al ícono desde el objeto de íconos
@@ -45,10 +42,6 @@ export default function Ajustes() {
                 })}
               </div>
       </div>
-
-
-
-     
     </div>
   );
 }

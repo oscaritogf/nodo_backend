@@ -41,9 +41,9 @@ const ClientLayout = ({ children }) => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-gray-900 ">
+    <div className="min-h-screen flex flex-col bg-gray-900  ">
       <Toaster />
-      <div className="flex flex-1 h-full">
+      <div className="flex flex-1 h-full ">
         <Sidebar
           isSidebarOpen={isSidebarOpen}
           toggleSidebar={toggleSidebar}
@@ -58,9 +58,9 @@ const ClientLayout = ({ children }) => {
             isDesktop={isDesktop}
           />
 
-          <div className="flex flex-1 h-full" >
+          <div className="flex flex-1 h-full " >
 
-            <div className="flex-1 flex justify-center">
+            <div className="flex-1 flex justify-center mx-auto ">
               
               <div className="w-full h-full">{children}</div>
 

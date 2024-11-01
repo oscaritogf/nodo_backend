@@ -1,5 +1,4 @@
 'use client';
-
 import SocialFooter from "@/components/SocialFooter";
 
 const consejos = [
@@ -10,19 +9,14 @@ const consejos = [
 export default function AjustesLayout({ children }) {
   return (
     <div className="flex flex-col h-full ">
-
-
-      <div className=" flex-1 space-y-4 p-2 h-4/5 ">
+      <div className=" flex-1 space-y-4 p-2  ">
          {children}
       </div>
-
-
-      <div className='flex flex-col h-1/5 justify-end'>
+      <div className='flex flex-col  justify-end'>
       <div className="mt-auto">
         <SocialFooter consejos={consejos} />
       </div>
       </div>
-  
     </div>
    
   );
