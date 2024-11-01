@@ -1,55 +1,78 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Sidebar from "@/components/Sidebar";
 import Header from "@/components/Header";
 import BottomNav from "@/components/BottomNav";
-import Breadcrumb from "@/components/Breadcrumb";
-import { Toaster } from 'sonner'; // Asegúrate de importar Toaster
+import RightPanel from "@/components/RightPanel";
+import { Toaster } from 'sonner';
+import SocialFooter from "@/components/SocialFooter"; // Importa el SocialFooter
 
 const ClientLayout = ({ children }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [title, setTitle] = useState('Inicio');
   const [userImage, setUserImage] = useState('/images/perfil_user.jpg');
+  const [isDesktop, setIsDesktop] = useState(false);
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth >= 1024) {
+        setIsSidebarOpen(true);
+        setIsDesktop(true);
+      } else {
+        setIsSidebarOpen(false);
+        setIsDesktop(false);
+      }
+    };
+
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   const toggleSidebar = () => {
-    setIsSidebarOpen(!isSidebarOpen);
+    if (!isDesktop) {
+      setIsSidebarOpen(!isSidebarOpen);
+    }
   };
 
-  // Función para actualizar el título desde el Sidebar
   const handleSetTitle = (newTitle) => {
     setTitle(newTitle);
   };
 
   return (
-    <div className="min-h-screen flex">
-      {/* Sonner Toaster para notificaciones */}
+    <div className="min-h-screen flex flex-col bg-gray-900 ">
       <Toaster />
-
-      <Sidebar
-        isSidebarOpen={isSidebarOpen}
-        toggleSidebar={toggleSidebar}
-        setTitle={handleSetTitle}
-      />
-
-      <div className="flex-1 p-6 bg-gray-100">
-        <Header 
-          toggleSidebar={toggleSidebar} 
-          isSidebarOpen={isSidebarOpen} 
-          title={title}
-          userImage={userImage} 
+      <div className="flex flex-1 h-full">
+        <Sidebar
+          isSidebarOpen={isSidebarOpen}
+          toggleSidebar={toggleSidebar}
+          setTitle={handleSetTitle}
         />
+        <div className={`flex-1 p-6 bg-gray-100 transition-all duration-300 ${isSidebarOpen ? 'lg:ml-64' : 'ml-0'} flex flex-col` }>
+          <Header
+            toggleSidebar={toggleSidebar}
+            isSidebarOpen={isSidebarOpen}
+            title={title}
+            userImage={userImage}
+            isDesktop={isDesktop}
+          />
 
-        <Breadcrumb currentPath={title} /> 
+          <div className="flex flex-1 h-full" >
 
-        <div className="mt-6 flex justify-center">
-          <div className="w-full">
-            {children} {/* Aquí se renderizan las subrutas de la página */}
+            <div className="flex-1 flex justify-center">
+              
+              <div className="w-full h-full">{children}</div>
+
+              {isDesktop && <RightPanel  />}
+              
+            </div>
+         
           </div>
+
         </div>
       </div>
-
-      <BottomNav />
+      {!isDesktop && <BottomNav />}
     </div>
   );
 };

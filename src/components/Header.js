@@ -3,7 +3,7 @@ import { FaBars } from 'react-icons/fa';
 
 const Header = ({ toggleSidebar, isSidebarOpen, title, userImage }) => {
     return (
-        <header className="mb-6">
+        <header className=" mb-4">
             <div className="flex items-center justify-between">
                 <button className="z-50 text-orange-600" onClick={toggleSidebar}>
                     {isSidebarOpen ? <FaBars size={32} className="text-white" /> : <FaBars size={32} />}
