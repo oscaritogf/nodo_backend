@@ -1,42 +1,83 @@
 export default function Privacidad() {
-    return (
-      <div className="flex flex-col  p-6 pb-20 lg:max-w-lg lg:mx-auto lg:pt-10 text-custom-gray"> 
-        <div>
-          <h2 className="text-lg font-semibold text-custom-gray mb-4 text-center lg:text-left">Controla quién puede ver tu información</h2>
-  
-          <form className="flex flex-col mt-4"> 
-            <div className="mb-6">
-              <label htmlFor="visibility" className="block text-xs font-semibold text-custom-gray mb-2 lg:text-base">
+  return (
+    <div className="bg-gray-100 p-6">
+      <div
+        className=" bg-gradient-to-br from-orange-400 via-orange-400 to-pink-500 rounded-2xl shadow-md h-full"
+        style={{
+          padding: '1rem', // Espaciado para crear la "franja" alrededor
+        }}
+      >
+        <div className="bg-white rounded-xl p-6 shadow-lg h-full">
+          <h2 className="text-2xl font-semibold text-gray-800 mb-6 text-center lg:text-left h-full">
+            Controla quién puede ver tu información
+          </h2>
+
+          <form className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-4">
+            <div>
+              <label htmlFor="visibility" className="block text-sm font-semibold text-gray-800 mb-2">
                 Visibilidad del perfil:
               </label>
               <div className="relative">
                 <select
                   id="visibility"
-                  className="w-full p-4 mt-1 rounded-md bg-custom-fondoInput appearance-none"
-                  style={{ boxShadow: '0 1px 10px rgba(0, 0, 0, 0.2)' }}
+                  className="w-full p-4 rounded-full bg-gray-100 text-gray-700 shadow-md focus:outline-none focus:ring-2 focus:ring-orange-400"
                 >
                   <option>Público</option>
                   <option>Privado</option>
+                  <option>Solo amigos</option>
                 </select>
-                
-                <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
-                  <svg className="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path>
-                  </svg>
-                </div>
               </div>
             </div>
+
+            <div>
+              <label htmlFor="tagging" className="block text-sm font-semibold text-gray-800 mb-2">
+                Permitir etiquetado:
+              </label>
+              <div className="relative">
+                <select
+                  id="tagging"
+                  className="w-full p-4 rounded-full bg-gray-100 text-gray-700 shadow-md focus:outline-none focus:ring-2 focus:ring-orange-400"
+                >
+                  <option>Todos</option>
+                  <option>Amigos</option>
+                  <option>Nadie</option>
+                </select>
+              </div>
+            </div>
+
+            <div>
+              <label htmlFor="connectionRequests" className="block text-sm font-semibold text-gray-800 mb-2">
+                Solicitudes de conexión permitidas:
+              </label>
+              <div className="relative">
+                <select
+                  id="connectionRequests"
+                  className="w-full p-4 rounded-full bg-gray-100 text-gray-700 shadow-md focus:outline-none focus:ring-2 focus:ring-orange-400"
+                >
+                  <option>Todos</option>
+                  <option>Amigos de amigos</option>
+                  <option>Nadie</option>
+                </select>
+              </div>
+            </div>
+
+            {/* Añade más campos aquí si es necesario */}
           </form>
-        </div>
-  
-        
-        <div className="mt-auto lg:mt-10">
-          <button type="submit" className="w-full py-4 px-3 text-white rounded-md font-bold transition-shadow duration-300 lg:shadow-lg lg:hover:shadow-xl"
-            style={{ backgroundColor: '#E0793F', boxShadow: '0 1px 10px rgba(0, 0, 0, 0.7)' }}>
-            Actualizar
-          </button>
+
+          <div className="mt-10">
+            <button
+              type="submit"
+              className="w-full py-4 text-white font-bold rounded-full bg-gradient-to-r from-green-500 to-blue-600 transition duration-300 transform hover:scale-105 hover:shadow-xl focus:outline-none"
+              style={{
+                boxShadow: '0px 4px 12px rgba(0, 0, 0, 0.2)',
+              }}
+            >
+              Guardar Cambios
+
+            </button>
+          </div>
         </div>
       </div>
-    );
-  }
-  
+    </div>
+  );
+}

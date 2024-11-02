@@ -1,4 +1,3 @@
-
 'use client';
 
 import React, { useState, useEffect } from 'react';
@@ -7,16 +6,15 @@ const InitToggleComponent = ({ onToggle, isPrestamistaEnabled }) => {
   const [selectedOption, setSelectedOption] = useState('prestatario');
 
   useEffect(() => {
-    if (onToggle) {
-      onToggle(selectedOption);
-    }
+    // Llama a la función onToggle cuando cambia el estado inicial
+    onToggle(selectedOption);
   }, [selectedOption, onToggle]);
 
   const toggleOption = (option) => {
     if (option === 'prestamista' && !isPrestamistaEnabled) {
       return; // Evita cambiar a "prestamista" si no está habilitado
     }
-    setSelectedOption(option);
+    setSelectedOption(option); // Cambia la opción seleccionada
   };
 
   return (

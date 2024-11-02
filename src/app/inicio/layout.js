@@ -6,7 +6,6 @@ import Header from "@/components/Header";
 import BottomNav from "@/components/BottomNav";
 import RightPanel from "@/components/RightPanel";
 import { Toaster } from 'sonner';
-import SocialFooter from "@/components/SocialFooter"; // Importa el SocialFooter
 
 const ClientLayout = ({ children }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -44,6 +43,7 @@ const ClientLayout = ({ children }) => {
     <div className="min-h-screen flex flex-col bg-gray-900  ">
       <Toaster />
       <div className="flex flex-1 h-full ">
+      
         <Sidebar
           isSidebarOpen={isSidebarOpen}
           toggleSidebar={toggleSidebar}

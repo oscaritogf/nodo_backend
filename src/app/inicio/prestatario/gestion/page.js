@@ -1,5 +1,5 @@
 
-export default function Gestion() {
+export default function gestion() {
     return (
       <div>
         <h1>Gestion</h1>
