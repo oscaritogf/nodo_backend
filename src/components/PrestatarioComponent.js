@@ -139,25 +139,7 @@ const DashboardPrestatario = () => {
         </div>
       </div>
 
-      {/* Sección Llamativa con Animaciones */}
-      <div className="bg-gradient-to-r from-blue-200 to-blue-400 p-6 rounded-lg shadow-lg mt-8 text-center">
-        <h3 className="text-xl font-bold text-blue-900 animate-fade-in">Consejos Financieros</h3>
-        <p className="text-blue-700 mt-2 animate-fade-in">Optimiza tu experiencia de préstamo con estas recomendaciones</p>
-        <div className="flex justify-center space-x-4 mt-4">
-          <div className="bg-white p-4 rounded-lg shadow-lg transform hover:scale-105 transition-transform duration-300 ease-in-out">
-            <h4 className="font-semibold text-blue-800">Configura Pago Automático</h4>
-            <p className="text-sm text-blue-600">Evita retrasos en tus pagos y asegura tu historial de crédito.</p>
-          </div>
-          <div className="bg-white p-4 rounded-lg shadow-lg transform hover:scale-105 transition-transform duration-300 ease-in-out">
-            <h4 className="font-semibold text-blue-800">Establece Recordatorios</h4>
-            <p className="text-sm text-blue-600">Recibe notificaciones de vencimiento para pagos oportunos.</p>
-          </div>
-          <div className="bg-white p-4 rounded-lg shadow-lg transform hover:scale-105 transition-transform duration-300 ease-in-out">
-            <h4 className="font-semibold text-blue-800">Consulta las Tasas de Interés</h4>
-            <p className="text-sm text-blue-600">Asegúrate de elegir las opciones de préstamo más favorables.</p>
-          </div>
-        </div>
-      </div>
+      
 
       <p className="text-xs text-gray-500 mt-4">Nota: Los datos son de referencia y pueden variar.</p>
     </div>

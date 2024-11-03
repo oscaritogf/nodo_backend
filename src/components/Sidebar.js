@@ -2,18 +2,26 @@
 
 import Link from 'next/link';
 import { FaHome, FaUser, FaCog, FaSignOutAlt } from 'react-icons/fa';
+import Image from 'next/image';
 
-const Sidebar = ({ isSidebarOpen, toggleSidebar, setTitle }) => {
+const Sidebar = ({ isSidebarOpen, toggleSidebar, setTitle, userName }) => {
   return (
     <aside
-      className={`text-white w-64 py-4 px-2 fixed inset-y-0 transform bg-gradient-to-br from-orange-400 via-orange-400 to-pink-500
-  ${
-        isSidebarOpen ? 'translate-x-0' : '-translate-x-full'
-      } z-30 transition-transform duration-300 h-auto`}
-      
+      className={`text-white w-64 py-4 px-2 fixed inset-y-0 transform bg-custom-orange
+        ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'} z-30 transition-transform duration-300 h-auto`}
     >
       <div className="flex flex-col items-center mt-20">
-        <img src="/images/logo_nodo.svg" alt="Logo" width={100} height={100} />
+        <Image 
+          src="/images/logo_nodo.svg"
+          alt="Logo"
+          width={100}
+          height={100}
+          className="w-auto h-auto" 
+        />
+        {/* Renderiza el nombre del usuario */}
+        {userName && (
+          <p className="mt-2 text-lg font-semibold text-white">{userName}</p>
+        )}
       </div>
 
       <nav className="space-y-4 mt-10 ml-2">
@@ -25,7 +33,7 @@ const Sidebar = ({ isSidebarOpen, toggleSidebar, setTitle }) => {
               toggleSidebar(); 
             }}
           >
-            <FaHome className="mr-2 text-orange-300" /> Inicio
+            <FaHome className="mr-2" /> Inicio
           </a>
         </Link>
 
@@ -37,7 +45,7 @@ const Sidebar = ({ isSidebarOpen, toggleSidebar, setTitle }) => {
               toggleSidebar();
             }}
           >
-            <FaCog className="mr-2 text-orange-300" /> Ajustes
+            <FaCog className="mr-2" /> Ajustes
           </a>
         </Link>
 
@@ -49,7 +57,7 @@ const Sidebar = ({ isSidebarOpen, toggleSidebar, setTitle }) => {
               toggleSidebar(); 
             }}
           >
-            <FaUser className="mr-2 text-orange-300" /> Prestatario
+            <FaUser className="mr-2" /> Prestatario
           </a>
         </Link>
 
@@ -61,7 +69,7 @@ const Sidebar = ({ isSidebarOpen, toggleSidebar, setTitle }) => {
               toggleSidebar();
             }}
           >
-            <FaUser className="mr-2 text-orange-300" /> Prestamista
+            <FaUser className="mr-2" /> Prestamista
           </a>
         </Link>
       </nav>

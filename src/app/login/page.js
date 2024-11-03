@@ -1,4 +1,4 @@
-'use client'
+'use client';
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
@@ -10,37 +10,40 @@ import ErrorNotification from "@/components/ErrorNotification";
 
 const Login = () => {
   const router = useRouter();
-
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [warningMessage, setWarningMessage] = useState([]);
   const [showPassword, setShowPassword] = useState(false);
 
   useEffect(() => {
-    console.log("Cleaning localStorage");
-    localStorage.removeItem("token");
+    // Limpia cualquier token previo al cargar el componente
+    if (typeof window !== 'undefined') {
+      console.log("Cleaning localStorage");
+      localStorage.removeItem("token");
+    }
   }, []);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-
+    
     const warnings = LoginFormValidator(email, password);
+    setWarningMessage([]); // Limpia mensajes de advertencia previos
 
     if (warnings.length === 0) {
-      LoginUser({ email, password })
-        .then((response) => {
-          if (response.error) {
-            setWarningMessage([response.error]);
-          } else {
+      try {
+        const response = await LoginUser({ email, password });
 
-            localStorage.setItem("token", response.idToken);
-            router.push("/inicio");
-            
-          }
-        })
-        .catch(() => {
-          setWarningMessage(["Email incorrecto o contraseña incorrecta"]);
-        });
+        // Verifica si el token existe en la respuesta y guárdalo
+        if (response.idToken) {
+          localStorage.setItem("token", response.idToken);
+          console.log("Token guardado en localStorage:", response.idToken);
+          router.push("/inicio"); // Redirecciona al usuario a la página de inicio
+        } else {
+          setWarningMessage(["No se recibió un token en la respuesta del servidor."]);
+        }
+      } catch (error) {
+        setWarningMessage(["Email incorrecto o contraseña incorrecta"]);
+      }
     } else {
       setWarningMessage(warnings);
     }
@@ -52,9 +55,8 @@ const Login = () => {
 
   return (
     <div className="flex justify-center items-center min-h-screen" style={{  
-      background: "linear-gradient(90deg, rgba(224, 121, 63, 1) 0%, rgba(224, 121, 63, 0.5) 100%)"
-    }}>
-
+      background: "linear-gradient(90deg, rgba(224, 121, 63, 1) 0%, rgba(224, 121, 63, 0.5) 100%)"}}>
+      
       <div className="w-full lg:w-1/3 items-center" style={{ background: "rgba(255, 255, 255)" }}>
         <div className="relative h-1/4 p-5">
           <div 
@@ -64,16 +66,17 @@ const Login = () => {
           <div className="absolute inset-0" 
             style={{ background: "linear-gradient(100deg, rgba(224, 121, 63, 1.00) 40%, rgba(224, 121, 63, 0.50) 100%)" }}
           />
-          <div className="relative h-full w-full flex text-white ml-5 mt-4 ">
+          <div className="relative h-full w-full flex text-white ml-5 mt-4">
             <Image 
               src="/images/logo_nodo.svg"
               alt="Logo"
               width={100}
               height={100}
+              className="w-auto h-auto" 
             />
           </div>
         </div>
-
+        
         <div className="p-8 h-3/4 flex flex-col justify-between items-center">
           <div className="w-full h-full">
             <div className="w-full rounded-lg bg-white h-full flex flex-col justify-between">
@@ -115,7 +118,7 @@ const Login = () => {
                     <button
                       type="button"
                       onClick={togglePasswordVisibility}
-                      className="absolute inset-y-0 right-0 pr-3  pt-8 text-gray-600"
+                      className="absolute inset-y-0 right-0 pr-3 pt-8 text-gray-600"
                     >
                       {showPassword ? <FaEyeSlash /> : <FaEye />}
                     </button>
@@ -126,8 +129,8 @@ const Login = () => {
                   <div className="mt-6">
                     <button
                       type="submit"
-                      className="w-full py-4 px-3 text-white rounded-md font-bold"
-                      style={{ backgroundColor: '#E0793F', boxShadow: '0 1px 10px rgba(0, 0, 0, 0.7)' }}
+                      className="w-full py-4 px-3 text-white rounded-md font-bold bg-custom-orange"
+                      style={{ boxShadow: '0 1px 10px rgba(0, 0, 0, 0.7)' }}
                     >
                       Iniciar sesión
                     </button>
@@ -143,7 +146,6 @@ const Login = () => {
                   </div>
                 </form>
               </div>
-
             </div>
           </div>
         </div>

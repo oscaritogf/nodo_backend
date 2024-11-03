@@ -72,6 +72,7 @@ const Register = () => {
                             alt="Logo"
                             width={100}
                             height={100}
+                            className="w-auto h-auto" 
                         />
                     </div>
                 </div>
@@ -159,8 +160,8 @@ const Register = () => {
                                     </div>
 
                                     <div className="mt-6">
-                                        <button type="submit" className="w-full py-4 px-3 text-white rounded-md font-bold"
-                                            style={{ backgroundColor: '#E0793F', boxShadow: '0 1px 10px rgba(0, 0, 0, 0.7)' }}>
+                                        <button type="submit" className="w-full py-4 px-3 text-white rounded-md font-bold bg-custom-orange"
+                                            style={{boxShadow: '0 1px 10px rgba(0, 0, 0, 0.7)' }}>
                                             Registrarse
                                         </button>
 

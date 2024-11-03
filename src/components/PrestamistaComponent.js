@@ -158,7 +158,7 @@ const DashboardPrestamista = () => {
             }}
           />
         </div>
-        hola como estas 
+    
       </div>
 
       {/* Resumen de Pagos y Balance */}

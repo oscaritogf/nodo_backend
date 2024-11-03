@@ -19,6 +19,7 @@ export default function InicioPage() {
 
   return (
     <div>
+      
       <InitToggleComponent
         onToggle={handleToggle}
         isPrestamistaEnabled={isPrestamistaEnabled}

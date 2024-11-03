@@ -9,14 +9,13 @@ export async function LoginUser(userLogin) {
             }
         });
 
-        return response.data; 
+        return response.data; // Supone que el token está en response.data.token
     } catch (error) {
         console.error("Error en LoginUser:", error);
 
         if (error.response && error.response.data) {
             throw new Error(`Error: ${error.response.status} - ${error.response.data.detail || 'Ocurrió un error'}`);
         } else {
-
             throw new Error('Error al conectar con el servidor.');
         }
     }
