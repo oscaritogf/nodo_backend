@@ -8,14 +8,14 @@ const consejos = [
 
 export default function PrestatarioLayout({ children }) {
   return (
-    <div className="flex flex-col h-full ">
-      <div className=" flex-1 space-y-4 p-2  ">
-         {children}
+    <div className="flex flex-col h-full mb-9">
+      <div className="flex-1 space-y-4 p-2">
+        {children}
       </div>
-      <div className='flex flex-col  justify-end'>
-      <div className="mt-auto">
-        <SocialFooter consejos={consejos} />
-      </div>
+      <div className="flex flex-col justify-end">
+        <div className="mt-auto hidden lg:block"> {/* Solo visible en escritorio (lg y superior) */}
+          <SocialFooter consejos={consejos} />
+        </div>
       </div>
     </div>
   );

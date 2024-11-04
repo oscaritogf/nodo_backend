@@ -4,7 +4,7 @@ export default function Seguridad() {
   return (
     <div className="bg-gray-100 p-6 lg:p-10 lg:pt-16 shadow-lg rounded-2xl w-full max-w-7xl mx-auto">
       <div
-        className="bg-gradient-to-br from-orange-400 via-orange-400 to-pink-500 rounded-2xl p-8"
+        className="bg-gradient-to-br from-custom-orange-light to-custom-orange-dark rounded-2xl p-8"
         style={{
           padding: '1rem',
         }}

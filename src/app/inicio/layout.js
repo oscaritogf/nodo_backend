@@ -45,7 +45,7 @@ const ClientLayout = ({ children }) => {
         }
       } else {
         console.log("No se encontró el token en localStorage");
-        router.push('/login'); // Redirige al usuario si no hay token
+        //router.push('/login'); // Redirige al usuario si no hay token
       }
       setIsTokenChecked(true); // Marca como verificado el token
     };
