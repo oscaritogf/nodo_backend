@@ -142,6 +142,12 @@ const Login = () => {
                           Regístrate aquí
                         </span>
                       </p>
+                      <p className="text-sm text-custom-gray">
+                        ¿No recuerdas tu contraseña?{' '}
+                        <span onClick={() => router.push('/ForgotPassword')} className="cursor-pointer hover:underline font-bold">
+                          Recuperala aquí
+                        </span>
+                      </p>
                     </div>
                   </div>
                 </form>

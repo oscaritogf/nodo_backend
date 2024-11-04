@@ -3,8 +3,11 @@
 import Link from 'next/link';
 import { FaHome, FaUser, FaCog, FaSignOutAlt } from 'react-icons/fa';
 import Image from 'next/image';
+import { useUser } from '@/context/UserContext'; // Importa el hook useUser
 
-const Sidebar = ({ isSidebarOpen, toggleSidebar, setTitle, userName }) => {
+const Sidebar = ({ isSidebarOpen, toggleSidebar, setTitle }) => {
+  const { user } = useUser(); // Obtiene el usuario desde el contexto
+
   return (
     <aside
       className={`text-white w-64 py-4 px-2 fixed inset-y-0 transform bg-custom-orange
@@ -18,9 +21,9 @@ const Sidebar = ({ isSidebarOpen, toggleSidebar, setTitle, userName }) => {
           height={100}
           className="w-auto h-auto" 
         />
-        {/* Renderiza el nombre del usuario */}
-        {userName && (
-          <p className="mt-2 text-lg font-semibold text-white">{userName}</p>
+        {/* Renderiza el nombre del usuario desde el contexto */}
+        {user?.firstName && (
+          <p className="mt-2 text-lg font-semibold text-white">{user.firstName} huh</p>
         )}
       </div>
 
@@ -92,3 +95,4 @@ const Sidebar = ({ isSidebarOpen, toggleSidebar, setTitle, userName }) => {
 };
 
 export default Sidebar;
+

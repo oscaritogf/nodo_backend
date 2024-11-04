@@ -90,7 +90,7 @@ const ClientLayout = ({ children }) => {
           isSidebarOpen={isSidebarOpen}
           toggleSidebar={toggleSidebar}
           setTitle={handleSetTitle}
-          userName={userName}
+
 
         />
         <div className={`flex-1 p-6 bg-gray-100 transition-all duration-300 ${isSidebarOpen ? 'lg:ml-64' : 'ml-0'} flex flex-col`}>

@@ -1,3 +1,6 @@
+"use client";
+
+import { UserProvider } from "@/context/UserContext";
 import localFont from "next/font/local";
 import "./globals.css";
 
@@ -12,18 +15,13 @@ const geistMono = localFont({
   weight: "100 900",
 });
 
-export const metadata = {
-  title: "Nodo",
-  description: "Creditos online",
-};
-
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className="text-custom-gray ">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-       {children} 
+    <html lang="en" className="text-custom-gray">
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+        <UserProvider>
+          {children}
+        </UserProvider>
       </body>
     </html>
   );
