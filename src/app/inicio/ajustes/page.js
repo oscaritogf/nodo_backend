@@ -30,7 +30,7 @@ const menuItems = [
     description: 'Actualizar tus documentos fiscales',
   },
   {
-    href: '/inicio/ajustes/perfil',
+    href: '/inicio/ajustes/editarPerfil',
     icon: FaUserCircle,
     title: 'Perfil',
     description: 'Edita tu información personal y preferencias',

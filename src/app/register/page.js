@@ -1,4 +1,4 @@
-'use client'
+'use client';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import ErrorNotification from '@/components/ErrorNotification';
@@ -13,10 +13,10 @@ const Register = () => {
     const [password, setPassword] = useState('');
     const [nombreCompleto, setNombreCompleto] = useState('');
     const [apellidoCompleto, setApellidoCompleto] = useState('');
+    const [fechaNacimiento, setFechaNacimiento] = useState('');
     const [warningMessage, setWarningMessage] = useState([]);
     const [showPassword, setShowPassword] = useState(false);
 
-    
     const handleNameKeyPress = (e) => {
         const regex = /^[A-Za-zÀ-ÿ\s]*$/; 
         if (!regex.test(e.key)) {
@@ -31,7 +31,8 @@ const Register = () => {
             email,
             password,
             nombre_completo: nombreCompleto,
-            apellido_completo: apellidoCompleto
+            apellido_completo: apellidoCompleto,
+            fecha_nacimiento: fechaNacimiento 
         };
 
         try {
@@ -42,14 +43,14 @@ const Register = () => {
                 return;
             }
 
-            router.push('/'); 
+            router.push('/verify'); 
         } catch (error) {
             setWarningMessage([error.message || 'Error al conectar con el servidor.']);
         }
     };
 
     const togglePasswordVisibility = () => {
-        setShowPassword(!showPassword); // Alternar entre mostrar y ocultar contraseña
+        setShowPassword(!showPassword);
     };
 
     return (
@@ -95,7 +96,7 @@ const Register = () => {
                                             type="text"
                                             value={nombreCompleto}
                                             onChange={(e) => setNombreCompleto(e.target.value)}
-                                            onKeyDown={handleNameKeyPress} // Bloquear entrada de números/caracteres especiales
+                                            onKeyDown={handleNameKeyPress}
                                             placeholder="Ingresa tu nombre completo"
                                             className="w-full p-4 mt-1  bg-custom-fondoInput mb-9  text-custom-gray"
                                             required
@@ -112,7 +113,7 @@ const Register = () => {
                                             type="text"
                                             value={apellidoCompleto}
                                             onChange={(e) => setApellidoCompleto(e.target.value)}
-                                            onKeyDown={handleNameKeyPress} // Bloquear entrada de números/caracteres especiales
+                                            onKeyDown={handleNameKeyPress}
                                             placeholder="Ingresa tu apellido completo"
                                             className="w-full p-4 mt-1 rounded-md bg-custom-fondoInput mb-9 text-custom-gray"
                                             required
@@ -142,7 +143,7 @@ const Register = () => {
                                         </label>
                                         <input
                                             id="password"
-                                            type={showPassword ? "text" : "password"} // Cambiar el tipo de input según la visibilidad
+                                            type={showPassword ? "text" : "password"}
                                             value={password}
                                             onChange={(e) => setPassword(e.target.value)}
                                             placeholder="Ingresa tu contraseña"
@@ -153,15 +154,30 @@ const Register = () => {
                                         <button
                                             type="button"
                                             onClick={togglePasswordVisibility}
-                                            className="absolute inset-y-0 right-0 pr-3  pt-8 text-gray-600"
+                                            className="absolute inset-y-0 right-0 pr-3 pt-8 text-gray-600"
                                         >
                                             {showPassword ? <FaEyeSlash /> : <FaEye />}
                                         </button>
                                     </div>
 
+                                    <div className="mb-6">
+                                        <label htmlFor="fechaNacimiento" className="block text-xs font-semibold text-custom-gray mb-4">
+                                            Fecha de Nacimiento
+                                        </label>
+                                        <input
+                                            id="fechaNacimiento"
+                                            type="date"
+                                            value={fechaNacimiento}
+                                            onChange={(e) => setFechaNacimiento(e.target.value)}
+                                            className="w-full p-4 mt-1 rounded-md bg-custom-fondoInput text-custom-gray"
+                                            required
+                                            style={{ boxShadow: '0 1px 10px rgba(0, 0, 0, 0.2)' }}
+                                        />
+                                    </div>
+
                                     <div className="mt-6">
                                         <button type="submit" className="w-full py-4 px-3 text-white rounded-md font-bold bg-custom-orange"
-                                            style={{boxShadow: '0 1px 10px rgba(0, 0, 0, 0.7)' }}>
+                                            style={{ boxShadow: '0 1px 10px rgba(0, 0, 0, 0.7)' }}>
                                             Registrarse
                                         </button>
 
@@ -185,4 +201,3 @@ const Register = () => {
 };
 
 export default Register;
-
