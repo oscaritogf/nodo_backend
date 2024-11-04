@@ -1,4 +1,5 @@
-'use client'
+'use client';
+
 import { useState } from 'react';
 import { FaEdit } from 'react-icons/fa';
 
@@ -119,5 +120,4 @@ export default function DetallesUsuario() {
     </div>
   );
 }
-
 
