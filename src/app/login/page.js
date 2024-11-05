@@ -20,11 +20,15 @@ const Login = () => {
   const [showPasswordWarning, setShowPasswordWarning] = useState(false);
 
   useEffect(() => {
-    // Limpia cualquier token previo al cargar el componente
-    if (typeof window !== 'undefined') {
-      localStorage.removeItem("token");
+    if (typeof window !== 'undefined' && window.localStorage) {
+      try {
+        window.localStorage.removeItem("token");
+      } catch (error) {
+        console.error("Error accediendo a localStorage en Android:", error);
+      }
     }
   }, []);
+  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
