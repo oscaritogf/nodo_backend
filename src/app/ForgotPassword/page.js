@@ -79,11 +79,11 @@ const ForgotPasswordComponent = () => {
                                         </label>
                                         <input
                                             id="email"
-                                            type="email"
+                                            type="text"
                                             value={email}
                                             onChange={(e) => setEmail(e.target.value)}
-                                            placeholder="Ingresa tu correo electrónico"
-                                            className="w-full p-4 mt-1 bg-custom-fondoInput mb-9 text-custom-gray"
+                                            placeholder="Ingresa un correo válido"
+                                            className="w-full p-4 mt-1 rounded-md bg-custom-fondoInput text-custom-gray"
                                             required
                                             style={{ boxShadow: '0 1px 10px rgba(0, 0, 0, 0.2)' }}
                                         />

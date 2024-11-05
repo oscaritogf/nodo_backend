@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { LoginUser } from "@/services/login";
-import { LoginFormValidator } from "@/utils/utils";
+import { FormValidator } from "@/utils/utils";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import ErrorNotification from "@/components/ErrorNotification";
 
@@ -26,9 +26,10 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     
-    const warnings = LoginFormValidator(email, password);
     setWarningMessage([]); // Limpia mensajes de advertencia previos
-
+    
+    const warnings = FormValidator({ email, password });
+    
     if (warnings.length === 0) {
       try {
         const response = await LoginUser({ email, password });
@@ -45,9 +46,10 @@ const Login = () => {
         setWarningMessage(["Email incorrecto o contraseña incorrecta"]);
       }
     } else {
-      setWarningMessage(warnings);
+      setWarningMessage(warnings); // Establece los mensajes de advertencia actuales
     }
   };
+
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
@@ -91,7 +93,7 @@ const Login = () => {
                     </label>
                     <input
                       id="email"
-                      type="email"
+                      type="text"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       placeholder="Ingresa un correo válido"

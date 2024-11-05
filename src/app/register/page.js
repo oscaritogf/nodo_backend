@@ -1,16 +1,19 @@
 'use client';
+
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import ErrorNotification from '@/components/ErrorNotification';
 import { RegisterUser } from '@/services/register';
 import Image from 'next/image';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
+import { FormValidator } from '@/utils/utils'; // Asegúrate de que la función esté exportada aquí
 
 const Register = () => {
     const router = useRouter();
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
     const [nombreCompleto, setNombreCompleto] = useState('');
     const [apellidoCompleto, setApellidoCompleto] = useState('');
     const [fechaNacimiento, setFechaNacimiento] = useState('');
@@ -26,28 +29,38 @@ const Register = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
-        const data = {
-            email,
-            password,
-            nombre_completo: nombreCompleto,
-            apellido_completo: apellidoCompleto,
-            fecha_nacimiento: fechaNacimiento 
-        };
-
-        try {
-            const response = await RegisterUser(data);
-
-            if (response.error) {
-                setWarningMessage([response.error || 'Error al registrar.']);
-                return;
+        
+        setWarningMessage([]); // Limpia mensajes de advertencia previos antes de validar
+    
+        // Validar el formulario con FormValidator
+        const warnings = FormValidator({ email, password, confirmPassword, fechaNacimiento });
+        
+        if (warnings.length === 0) {
+            const data = {
+                email,
+                password,
+                nombre_completo: nombreCompleto,
+                apellido_completo: apellidoCompleto,
+                fecha_nacimiento: fechaNacimiento 
+            };
+    
+            try {
+                const response = await RegisterUser(data);
+    
+                if (response.error) {
+                    setWarningMessage([response.error || 'Error al registrar.']);
+                    return;
+                }
+    
+                router.push('/verify'); // Redirige al usuario a la página de verificación
+            } catch (error) {
+                setWarningMessage([error.message || 'Error al conectar con el servidor.']);
             }
-
-            router.push('/verify'); 
-        } catch (error) {
-            setWarningMessage([error.message || 'Error al conectar con el servidor.']);
+        } else {
+            setWarningMessage(warnings); // Establece los mensajes de advertencia actuales
         }
     };
+    
 
     const togglePasswordVisibility = () => {
         setShowPassword(!showPassword);
@@ -82,15 +95,13 @@ const Register = () => {
                     <div className="w-full h-full">
                         <div className="w-full rounded-lg bg-white h-full flex flex-col justify-between">
                             <div>
-                            {warningMessage.length > 0 && <ErrorNotification errors={warningMessage} />}
                                 <h1 className="text-4xl font-bold text-custom-gray mb-5 mt-10 text-center">Registro</h1>
                                 <h3 className="text-1xl text-custom-gray mb-9 text-center">Crea tu cuenta en NODO</h3>
 
                                 <form className="flex flex-col mt-auto" onSubmit={handleSubmit}>
+                                    {/* Nombre y Apellido */}
                                     <div>
-                                        <label htmlFor="nombreCompleto" className="block text-xs font-semibold text-custom-gray mb-4">
-                                            Nombre 
-                                        </label>
+                                        <label htmlFor="nombreCompleto" className="block text-xs font-semibold text-custom-gray mb-4">Nombre</label>
                                         <input
                                             id="nombreCompleto"
                                             type="text"
@@ -98,16 +109,12 @@ const Register = () => {
                                             onChange={(e) => setNombreCompleto(e.target.value)}
                                             onKeyDown={handleNameKeyPress}
                                             placeholder="Ingresa tu nombre completo"
-                                            className="w-full p-4 mt-1  bg-custom-fondoInput mb-9  text-custom-gray"
+                                            className="w-full p-4 mt-1 bg-custom-fondoInput mb-9 text-custom-gray"
                                             required
-                                            style={{ boxShadow: '0 1px 10px rgba(0, 0, 0, 0.2)' }}
                                         />
                                     </div>
-
                                     <div>
-                                        <label htmlFor="apellidoCompleto" className="block text-xs font-semibold text-custom-gray mb-4">
-                                            Apellido 
-                                        </label>
+                                        <label htmlFor="apellidoCompleto" className="block text-xs font-semibold text-custom-gray mb-4">Apellido</label>
                                         <input
                                             id="apellidoCompleto"
                                             type="text"
@@ -117,30 +124,26 @@ const Register = () => {
                                             placeholder="Ingresa tu apellido completo"
                                             className="w-full p-4 mt-1 rounded-md bg-custom-fondoInput mb-9 text-custom-gray"
                                             required
-                                            style={{ boxShadow: '0 1px 10px rgba(0, 0, 0, 0.2)' }}
                                         />
                                     </div>
 
+                                    {/* Email */}
                                     <div>
-                                        <label htmlFor="email" className="block text-xs font-semibold text-custom-gray mb-4">
-                                            Correo
-                                        </label>
+                                        <label htmlFor="email" className="block text-xs font-semibold text-custom-gray mb-4">Correo</label>
                                         <input
                                             id="email"
-                                            type="email"
+                                            type="text"
                                             value={email}
                                             onChange={(e) => setEmail(e.target.value)}
                                             placeholder="Ingresa un correo válido"
                                             className="w-full p-4 mt-1 rounded-md bg-custom-fondoInput mb-9 text-custom-gray"
                                             required
-                                            style={{ boxShadow: '0 1px 10px rgba(0, 0, 0, 0.2)' }}
                                         />
                                     </div>
 
+                                    {/* Contraseña y Confirmar Contraseña */}
                                     <div className="relative mb-6">
-                                        <label htmlFor="password" className="block text-xs font-semibold text-custom-gray mb-4">
-                                            Contraseña
-                                        </label>
+                                        <label htmlFor="password" className="block text-xs font-semibold text-custom-gray mb-4">Contraseña</label>
                                         <input
                                             id="password"
                                             type={showPassword ? "text" : "password"}
@@ -149,7 +152,6 @@ const Register = () => {
                                             placeholder="Ingresa tu contraseña"
                                             className="w-full p-4 mt-1 rounded-md bg-custom-fondoInput text-custom-gray "
                                             required
-                                            style={{ boxShadow: '0 1px 10px rgba(0, 0, 0, 0.2)' }}
                                         />
                                         <button
                                             type="button"
@@ -159,21 +161,34 @@ const Register = () => {
                                             {showPassword ? <FaEyeSlash /> : <FaEye />}
                                         </button>
                                     </div>
+                                    <div className="relative mb-6">
+                                        <label htmlFor="confirmPassword" className="block text-xs font-semibold text-custom-gray mb-4">Confirmar Contraseña</label>
+                                        <input
+                                            id="confirmPassword"
+                                            type={showPassword ? "text" : "password"}
+                                            value={confirmPassword}
+                                            onChange={(e) => setConfirmPassword(e.target.value)}
+                                            placeholder="Confirma tu contraseña"
+                                            className="w-full p-4 mt-1 rounded-md bg-custom-fondoInput text-custom-gray "
+                                            required
+                                        />
+                                    </div>
 
+                                    {/* Fecha de Nacimiento */}
                                     <div className="mb-6">
-                                        <label htmlFor="fechaNacimiento" className="block text-xs font-semibold text-custom-gray mb-4">
-                                            Fecha de Nacimiento
-                                        </label>
+                                        <label htmlFor="fechaNacimiento" className="block text-xs font-semibold text-custom-gray mb-4">Fecha de Nacimiento</label>
                                         <input
                                             id="fechaNacimiento"
                                             type="date"
                                             value={fechaNacimiento}
                                             onChange={(e) => setFechaNacimiento(e.target.value)}
+                                            min="1900-01-01"
+                                            max={new Date(new Date().setFullYear(new Date().getFullYear() - 21)).toISOString().split('T')[0]}
                                             className="w-full p-4 mt-1 rounded-md bg-custom-fondoInput text-custom-gray"
                                             required
-                                            style={{ boxShadow: '0 1px 10px rgba(0, 0, 0, 0.2)' }}
                                         />
                                     </div>
+                                    {warningMessage.length > 0 && <ErrorNotification errors={warningMessage} />}
 
                                     <div className="mt-6">
                                         <button type="submit" className="w-full py-4 px-3 text-white rounded-md font-bold bg-custom-orange"
