@@ -3,8 +3,9 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import ErrorNotification from '@/components/ErrorNotification';
-import { ForgotPassword } from '@/services/ForgotPassword'; // Importar el servicio de recuperación de contraseña
+import { ForgotPassword } from '@/services/ForgotPassword';
 import Image from 'next/image';
+import { FormValidator } from "@/utils/utils";
 
 const ForgotPasswordComponent = () => {
     const router = useRouter();
@@ -12,9 +13,18 @@ const ForgotPasswordComponent = () => {
     const [email, setEmail] = useState('');
     const [warningMessage, setWarningMessage] = useState([]);
     const [successMessage, setSuccessMessage] = useState('');
+    const [showEmailWarning, setShowEmailWarning] = useState(false);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setWarningMessage([]);
+
+        // Usa el validador de correo con FormValidator
+        const warnings = FormValidator({ email });
+        if (warnings.length > 0) {
+            setWarningMessage(warnings);
+            return;
+        }
 
         try {
             const response = await ForgotPassword({ email });
@@ -59,7 +69,6 @@ const ForgotPasswordComponent = () => {
                     <div className="w-full h-full">
                         <div className="w-full rounded-lg bg-white h-full flex flex-col justify-between">
                             <div>
-                                {/* Mensaje de éxito */}
                                 {successMessage && (
                                     <div className="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 mb-4" role="alert">
                                         <p className="font-bold">Solicitud enviada</p>
@@ -73,15 +82,20 @@ const ForgotPasswordComponent = () => {
                                 <h3 className="text-1xl text-custom-gray mb-9 text-center">Ingresa tu correo para recuperar tu cuenta en NODO</h3>
 
                                 <form className="flex flex-col mt-auto" onSubmit={handleSubmit}>
-                                    <div>
+                                    <div className="relative mb-6">
                                         <label htmlFor="email" className="block text-xs font-semibold text-custom-gray mb-4">
                                             Correo electrónico
                                         </label>
+                                        {showEmailWarning && (
+                                            <p className="text-xs text-yellow-600 mb-2">Debe ser un correo electrónico válido (ejemplo@dominio.com).</p>
+                                        )}
                                         <input
                                             id="email"
                                             type="text"
                                             value={email}
                                             onChange={(e) => setEmail(e.target.value)}
+                                            onFocus={() => setShowEmailWarning(true)}
+                                            onBlur={() => setShowEmailWarning(false)}
                                             placeholder="Ingresa un correo válido"
                                             className="w-full p-4 mt-1 rounded-md bg-custom-fondoInput text-custom-gray"
                                             required
@@ -114,4 +128,3 @@ const ForgotPasswordComponent = () => {
 };
 
 export default ForgotPasswordComponent;
-

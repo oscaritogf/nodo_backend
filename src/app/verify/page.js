@@ -3,8 +3,9 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import ErrorNotification from '@/components/ErrorNotification';
-import { VerifyUser } from '@/services/verify'; // Importar el servicio de verificación
+import { VerifyUser } from '@/services/verify';
 import Image from 'next/image';
+import { FormValidator } from '@/utils/utils';
 
 const Verify = () => {
     const router = useRouter();
@@ -13,25 +14,22 @@ const Verify = () => {
     const [verificationCode, setVerificationCode] = useState('');
     const [warningMessage, setWarningMessage] = useState([]);
 
+    // States for showing warnings
+    const [showEmailWarning, setShowEmailWarning] = useState(false);
+    const [showCodeWarning, setShowCodeWarning] = useState(false);
+
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        const data = {
-            email,
-            verificationCode
-        };
-
-        console.log("Datos enviados:", data); // Imprimir en consola antes de la verificación
+        const data = { email, verificationCode };
 
         try {
-            const response = await VerifyUser(data); // Llamar al servicio VerifyUser
-
+            const response = await VerifyUser(data);
             if (response.error) {
                 setWarningMessage([response.error || 'Error al verificar.']);
                 return;
             }
-
-            router.push('/'); 
+            router.push('/');
         } catch (error) {
             setWarningMessage([error.message || 'Error al conectar con el servidor.']);
         }
@@ -77,32 +75,43 @@ const Verify = () => {
                                 <h3 className="text-1xl text-custom-gray mb-9 text-center">Verifica tu cuenta en NODO</h3>
 
                                 <form className="flex flex-col mt-auto" onSubmit={handleSubmit}>
-                                    <div className='mb-6'>
-                                        <label htmlFor="email" className="block text-xs font-semibold text-custom-gray mb-4">
-                                            Correo
-                                        </label>
+                                    {/* Email */}
+                                    <div className='relative mb-6'>
+                                        <label htmlFor="email" className="block text-xs font-semibold text-custom-gray mb-4">Correo</label>
+                                        {showEmailWarning && (
+                                            <p className="text-xs text-yellow-600 mb-2">Debe ser un correo electrónico válido (ejemplo@dominio.com).</p>
+                                        )}
                                         <input
                                             id="email"
-                                            type="text"
+                                            type="TEXT"
                                             value={email}
-                                            onChange={(e) => setEmail(e.target.value)}
+                                            onChange={(e) => {
+                                                setEmail(e.target.value);
+                                                const emailWarning = FormValidator({ email: e.target.value });
+                                                setShowEmailWarning(emailWarning.length > 0);
+                                            }}
+                                            onFocus={() => setShowEmailWarning(true)}
+                                            onBlur={() => setShowEmailWarning(false)}
                                             placeholder="Ingresa un correo válido"
                                             className="w-full p-4 mt-1 rounded-md bg-custom-fondoInput text-custom-gray"
                                             required
                                             style={{ boxShadow: '0 1px 10px rgba(0, 0, 0, 0.2)' }}
                                         />
-                                        
                                     </div>
 
-                                    <div>
-                                        <label htmlFor="verificationCode" className="block text-xs font-semibold text-custom-gray mb-4">
-                                            Código de Verificación
-                                        </label>
+                                    {/* Verification Code */}
+                                    <div className="relative mb-6">
+                                        <label htmlFor="verificationCode" className="block text-xs font-semibold text-custom-gray mb-4">Código de Verificación</label>
+                                        {showCodeWarning && (
+                                            <p className="text-xs text-yellow-600 mb-2">Debe ingresar el código de verificación enviado a su correo.</p>
+                                        )}
                                         <input
                                             id="verificationCode"
                                             type="text"
                                             value={verificationCode}
                                             onChange={(e) => setVerificationCode(e.target.value)}
+                                            onFocus={() => setShowCodeWarning(true)}
+                                            onBlur={() => setShowCodeWarning(false)}
                                             placeholder="Ingresa el código de verificación"
                                             className="w-full p-4 mt-1 rounded-md bg-custom-fondoInput mb-9 text-custom-gray"
                                             required
@@ -135,3 +144,5 @@ const Verify = () => {
 };
 
 export default Verify;
+
+

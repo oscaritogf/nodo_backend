@@ -6,7 +6,7 @@ import ErrorNotification from '@/components/ErrorNotification';
 import { RegisterUser } from '@/services/register';
 import Image from 'next/image';
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
-import { FormValidator } from '@/utils/utils'; // Asegúrate de que la función esté exportada aquí
+import { FormValidator } from '@/utils/utils';
 
 const Register = () => {
     const router = useRouter();
@@ -20,6 +20,14 @@ const Register = () => {
     const [warningMessage, setWarningMessage] = useState([]);
     const [showPassword, setShowPassword] = useState(false);
 
+    // Estados para mostrar las advertencias de cada campo
+    const [showNameWarning, setShowNameWarning] = useState(false);
+    const [showLastNameWarning, setShowLastNameWarning] = useState(false);
+    const [showEmailWarning, setShowEmailWarning] = useState(false);
+    const [showPasswordWarning, setShowPasswordWarning] = useState(false);
+    const [showConfirmPasswordWarning, setShowConfirmPasswordWarning] = useState(false);
+    const [showDOBWarning, setShowDOBWarning] = useState(false);
+
     const handleNameKeyPress = (e) => {
         const regex = /^[A-Za-zÀ-ÿ\s]*$/; 
         if (!regex.test(e.key)) {
@@ -30,9 +38,8 @@ const Register = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         
-        setWarningMessage([]); // Limpia mensajes de advertencia previos antes de validar
+        setWarningMessage([]);
     
-        // Validar el formulario con FormValidator
         const warnings = FormValidator({ email, password, confirmPassword, fechaNacimiento });
         
         if (warnings.length === 0) {
@@ -52,15 +59,14 @@ const Register = () => {
                     return;
                 }
     
-                router.push('/verify'); // Redirige al usuario a la página de verificación
+                router.push('/verify');
             } catch (error) {
                 setWarningMessage([error.message || 'Error al conectar con el servidor.']);
             }
         } else {
-            setWarningMessage(warnings); // Establece los mensajes de advertencia actuales
+            setWarningMessage(warnings);
         }
     };
-    
 
     const togglePasswordVisibility = () => {
         setShowPassword(!showPassword);
@@ -70,7 +76,6 @@ const Register = () => {
         <div className="flex justify-center items-center min-h-screen" style={{  
             background: "linear-gradient(90deg, rgba(224, 121, 63, 1) 0%, rgba(224, 121, 63, 0.5) 100%)"
         }}>
-
             <div className="w-full lg:w-1/3 items-center" style={{ background: "rgba(255, 255, 255)" }}>
                 <div className="relative h-1/4 p-5">
                     <div 
@@ -99,95 +104,140 @@ const Register = () => {
                                 <h3 className="text-1xl text-custom-gray mb-9 text-center">Crea tu cuenta en NODO</h3>
 
                                 <form className="flex flex-col mt-auto" onSubmit={handleSubmit}>
-                                    {/* Nombre y Apellido */}
-                                    <div>
+                                    {/* Nombre */}
+                                    <div className="relative mb-6">
                                         <label htmlFor="nombreCompleto" className="block text-xs font-semibold text-custom-gray mb-4">Nombre</label>
+                                        {showNameWarning && (
+                                            <p className="text-xs text-yellow-600 mb-2">Solo letras y espacios permitidos.</p>
+                                        )}
                                         <input
                                             id="nombreCompleto"
                                             type="text"
                                             value={nombreCompleto}
                                             onChange={(e) => setNombreCompleto(e.target.value)}
                                             onKeyDown={handleNameKeyPress}
+                                            onFocus={() => setShowNameWarning(true)}
+                                            onBlur={() => setShowNameWarning(false)}
                                             placeholder="Ingresa tu nombre completo"
-                                            className="w-full p-4 mt-1 bg-custom-fondoInput mb-9 text-custom-gray"
+                                            className="w-full p-4 mt-1 bg-custom-fondoInput mb-2 text-custom-gray"
                                             required
+                                            style={{ boxShadow: '0 1px 10px rgba(0, 0, 0, 0.2)' }}
                                         />
                                     </div>
-                                    <div>
+
+                                    {/* Apellido */}
+                                    <div className="relative mb-6">
                                         <label htmlFor="apellidoCompleto" className="block text-xs font-semibold text-custom-gray mb-4">Apellido</label>
+                                        {showLastNameWarning && (
+                                            <p className="text-xs text-yellow-600 mb-2">Solo letras y espacios permitidos.</p>
+                                        )}
                                         <input
                                             id="apellidoCompleto"
                                             type="text"
                                             value={apellidoCompleto}
                                             onChange={(e) => setApellidoCompleto(e.target.value)}
                                             onKeyDown={handleNameKeyPress}
+                                            onFocus={() => setShowLastNameWarning(true)}
+                                            onBlur={() => setShowLastNameWarning(false)}
                                             placeholder="Ingresa tu apellido completo"
-                                            className="w-full p-4 mt-1 rounded-md bg-custom-fondoInput mb-9 text-custom-gray"
+                                            className="w-full p-4 mt-1 rounded-md bg-custom-fondoInput mb-2 text-custom-gray"
                                             required
+                                            style={{ boxShadow: '0 1px 10px rgba(0, 0, 0, 0.2)' }}
                                         />
                                     </div>
 
                                     {/* Email */}
-                                    <div>
+                                    <div className="relative mb-6">
                                         <label htmlFor="email" className="block text-xs font-semibold text-custom-gray mb-4">Correo</label>
+                                        {showEmailWarning && (
+                                            <p className="text-xs text-yellow-600 mb-2">Debe ser un correo electrónico válido (ejemplo@dominio.com).</p>
+                                        )}
                                         <input
                                             id="email"
                                             type="text"
                                             value={email}
                                             onChange={(e) => setEmail(e.target.value)}
+                                            onFocus={() => setShowEmailWarning(true)}
+                                            onBlur={() => setShowEmailWarning(false)}
                                             placeholder="Ingresa un correo válido"
-                                            className="w-full p-4 mt-1 rounded-md bg-custom-fondoInput mb-9 text-custom-gray"
+                                            className="w-full p-4 mt-1 rounded-md bg-custom-fondoInput mb-2 text-custom-gray"
                                             required
+                                            style={{ boxShadow: '0 1px 10px rgba(0, 0, 0, 0.2)' }}
                                         />
                                     </div>
 
-                                    {/* Contraseña y Confirmar Contraseña */}
+                                    {/* Contraseña */}
                                     <div className="relative mb-6">
-                                        <label htmlFor="password" className="block text-xs font-semibold text-custom-gray mb-4">Contraseña</label>
-                                        <input
-                                            id="password"
-                                            type={showPassword ? "text" : "password"}
-                                            value={password}
-                                            onChange={(e) => setPassword(e.target.value)}
-                                            placeholder="Ingresa tu contraseña"
-                                            className="w-full p-4 mt-1 rounded-md bg-custom-fondoInput text-custom-gray "
-                                            required
-                                        />
-                                        <button
-                                            type="button"
-                                            onClick={togglePasswordVisibility}
-                                            className="absolute inset-y-0 right-0 pr-3 pt-8 text-gray-600"
-                                        >
-                                            {showPassword ? <FaEyeSlash /> : <FaEye />}
-                                        </button>
+                                        <label htmlFor="password" className="block text-xs font-semibold text-custom-gray mb-4">
+                                            Contraseña
+                                        </label>
+                                        {showPasswordWarning && (
+                                            <p className="text-xs text-yellow-600 mb-2">La contraseña debe contener al menos 6 caracteres, incluyendo una letra mayúscula y un carácter especial, y no puede incluir secuencias de números como 123.</p>
+                                        )}
+                                        <div className="relative">
+                                            <input
+                                                id="password"
+                                                type={showPassword ? "text" : "password"}
+                                                value={password}
+                                                onChange={(e) => setPassword(e.target.value)}
+                                                onFocus={() => setShowPasswordWarning(true)}
+                                                onBlur={() => setShowPasswordWarning(false)}
+                                                placeholder="Ingresa tu contraseña"
+                                                className="w-full p-4 mt-1 rounded-md bg-custom-fondoInput text-custom-gray pr-10"
+                                                required
+                                                style={{ boxShadow: '0 1px 10px rgba(0, 0, 0, 0.2)' }}
+                                            />
+                                            <button
+                                                type="button"
+                                                onClick={togglePasswordVisibility}
+                                                className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-600"
+                                            >
+                                                {showPassword ? <FaEyeSlash /> : <FaEye />}
+                                            </button>
+                                        </div>
                                     </div>
+
+                                    {/* Confirmar Contraseña */}
                                     <div className="relative mb-6">
                                         <label htmlFor="confirmPassword" className="block text-xs font-semibold text-custom-gray mb-4">Confirmar Contraseña</label>
+                                        {showConfirmPasswordWarning && (
+                                            <p className="text-xs text-yellow-600 mb-2">Debe coincidir con la contraseña anterior.</p>
+                                        )}
                                         <input
                                             id="confirmPassword"
                                             type={showPassword ? "text" : "password"}
                                             value={confirmPassword}
                                             onChange={(e) => setConfirmPassword(e.target.value)}
+                                            onFocus={() => setShowConfirmPasswordWarning(true)}
+                                            onBlur={() => setShowConfirmPasswordWarning(false)}
                                             placeholder="Confirma tu contraseña"
-                                            className="w-full p-4 mt-1 rounded-md bg-custom-fondoInput text-custom-gray "
+                                            className="w-full p-4 mt-1 rounded-md bg-custom-fondoInput text-custom-gray"
                                             required
+                                            style={{ boxShadow: '0 1px 10px rgba(0, 0, 0, 0.2)' }}
                                         />
                                     </div>
 
                                     {/* Fecha de Nacimiento */}
-                                    <div className="mb-6">
+                                    <div className="relative mb-6">
                                         <label htmlFor="fechaNacimiento" className="block text-xs font-semibold text-custom-gray mb-4">Fecha de Nacimiento</label>
+                                        {showDOBWarning && (
+                                            <p className="text-xs text-yellow-600 mb-2">Debe ser mayor de 21 años.</p>
+                                        )}
                                         <input
                                             id="fechaNacimiento"
                                             type="date"
                                             value={fechaNacimiento}
                                             onChange={(e) => setFechaNacimiento(e.target.value)}
+                                            onFocus={() => setShowDOBWarning(true)}
+                                            onBlur={() => setShowDOBWarning(false)}
                                             min="1900-01-01"
                                             max={new Date(new Date().setFullYear(new Date().getFullYear() - 21)).toISOString().split('T')[0]}
                                             className="w-full p-4 mt-1 rounded-md bg-custom-fondoInput text-custom-gray"
                                             required
+                                            style={{ boxShadow: '0 1px 10px rgba(0, 0, 0, 0.2)' }}
                                         />
                                     </div>
+
                                     {warningMessage.length > 0 && <ErrorNotification errors={warningMessage} />}
 
                                     <div className="mt-6">

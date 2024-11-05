@@ -15,17 +15,19 @@ const Login = () => {
   const [warningMessage, setWarningMessage] = useState([]);
   const [showPassword, setShowPassword] = useState(false);
 
+  // States to show warnings for each field
+  const [showEmailWarning, setShowEmailWarning] = useState(false);
+  const [showPasswordWarning, setShowPasswordWarning] = useState(false);
+
   useEffect(() => {
     // Limpia cualquier token previo al cargar el componente
     if (typeof window !== 'undefined') {
-      console.log("Cleaning localStorage");
       localStorage.removeItem("token");
     }
   }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
     setWarningMessage([]); // Limpia mensajes de advertencia previos
     
     const warnings = FormValidator({ email, password });
@@ -33,11 +35,8 @@ const Login = () => {
     if (warnings.length === 0) {
       try {
         const response = await LoginUser({ email, password });
-
-        // Verifica si el token existe en la respuesta y guárdalo
         if (response.idToken) {
           localStorage.setItem("token", response.idToken);
-          console.log("Token guardado en localStorage:", response.idToken);
           router.push("/inicio"); // Redirecciona al usuario a la página de inicio
         } else {
           setWarningMessage(["No se recibió un token en la respuesta del servidor."]);
@@ -49,7 +48,6 @@ const Login = () => {
       setWarningMessage(warnings); // Establece los mensajes de advertencia actuales
     }
   };
-
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
@@ -87,15 +85,18 @@ const Login = () => {
                 <h3 className="text-1xl text-custom-gray mb-9 text-center">Inicia sesión con tu cuenta de NODO</h3>
 
                 <form className="flex flex-col mt-auto" onSubmit={handleSubmit}>
-                  <div className="mb-6">
-                    <label htmlFor="email" className="block text-xs font-semibold text-custom-gray mb-4">
-                      Email
-                    </label>
+                  <div className="relative mb-6">
+                    <label htmlFor="email" className="block text-xs font-semibold text-custom-gray mb-4">Email</label>
+                    {showEmailWarning && (
+                      <p className="text-xs text-yellow-600 mb-2">Debe ser un correo electrónico válido (ejemplo@dominio.com).</p>
+                    )}
                     <input
                       id="email"
                       type="text"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
+                      onFocus={() => setShowEmailWarning(true)}
+                      onBlur={() => setShowEmailWarning(false)}
                       placeholder="Ingresa un correo válido"
                       className="w-full p-4 mt-1 rounded-md bg-custom-fondoInput text-custom-gray"
                       required
@@ -107,23 +108,32 @@ const Login = () => {
                     <label htmlFor="password" className="block text-xs font-semibold text-custom-gray mb-4">
                       Contraseña
                     </label>
-                    <input
-                      id="password"
-                      type={showPassword ? "text" : "password"}
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                      placeholder="Ingresa tu contraseña"
-                      className="w-full p-4 mt-1 rounded-md bg-custom-fondoInput text-custom-gray"
-                      required
-                      style={{ boxShadow: '0 1px 10px rgba(0, 0, 0, 0.2)' }}
-                    />
-                    <button
-                      type="button"
-                      onClick={togglePasswordVisibility}
-                      className="absolute inset-y-0 right-0 pr-3 pt-8 text-gray-600"
-                    >
-                      {showPassword ? <FaEyeSlash /> : <FaEye />}
-                    </button>
+                    <p className="text-xs text-yellow-600 mb-2">                         ¿No recuerdas tu contraseña?{' '}
+                      <span onClick={() => router.push('/ForgotPassword')} className="cursor-pointer hover:underline font-bold">
+                        Recuperala aquí
+                      </span></p>
+
+                    <div className="relative">
+                      <input
+                        id="password"
+                        type={showPassword ? "text" : "password"}
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        onFocus={() => setShowPasswordWarning(true)}
+                        onBlur={() => setShowPasswordWarning(false)}
+                        placeholder="Ingresa tu contraseña"
+                        className="w-full p-4 mt-1 rounded-md bg-custom-fondoInput text-custom-gray pr-10"
+                        required
+                        style={{ boxShadow: '0 1px 10px rgba(0, 0, 0, 0.2)' }}
+                      />
+                      <button
+                        type="button"
+                        onClick={togglePasswordVisibility}
+                        className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-600"
+                      >
+                        {showPassword ? <FaEyeSlash /> : <FaEye />}
+                      </button>
+                    </div>
                   </div>
 
                   {warningMessage.length > 0 && <ErrorNotification errors={warningMessage} className="mb-4" />}
@@ -142,12 +152,6 @@ const Login = () => {
                         ¿No tienes una cuenta?{' '}
                         <span onClick={() => router.push('/register')} className="cursor-pointer hover:underline font-bold">
                           Regístrate aquí
-                        </span>
-                      </p>
-                      <p className="text-sm text-custom-gray">
-                        ¿No recuerdas tu contraseña?{' '}
-                        <span onClick={() => router.push('/ForgotPassword')} className="cursor-pointer hover:underline font-bold">
-                          Recuperala aquí
                         </span>
                       </p>
                     </div>
