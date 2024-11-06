@@ -3,7 +3,7 @@ import settings from './settings';
 
 export async function ForgotPassword(userData) {
     try { 
-        const response = await axios.post(`${settings.local}/user/forgot-password`, userData, {
+        const response = await axios.post(`${settings.domain}/user/forgot-password`, userData, {
             headers: {
                 'Content-Type': 'application/json',
             },

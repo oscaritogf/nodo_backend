@@ -3,7 +3,7 @@ import settings from './settings';
 
 export async function VerifyUser(userData) {
     try { 
-        const response = await axios.post(`${settings.local}/user/verify`, userData, {
+        const response = await axios.post(`${settings.domain}/user/verify`, userData, {
             headers: {
                 'Content-Type': 'application/json',
             },
