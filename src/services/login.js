@@ -3,7 +3,7 @@ import settings from './settings';
 
 export async function LoginUser(userLogin) {
     try {
-        const response = await axios.post(`${settings.domain}/user/login`, userLogin, {
+        const response = await axios.post(`${settings.local}/user/login`, userLogin, {
             headers: {
                 'Content-Type': 'application/json',
             }
@@ -20,3 +20,4 @@ export async function LoginUser(userLogin) {
         }
     }
 }
+

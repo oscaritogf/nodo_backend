@@ -11,7 +11,7 @@ const consejos = [
 
 export default function PrestamistaLayout({ children }) {
   return (
-    <div className="flex flex-col h-full mb-9">
+    <div className="flex flex-col h-full mb-9 text-custom-gray">
       <div className="flex-1 space-y-4 p-2">
         {children}
       </div>

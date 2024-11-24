@@ -1,31 +1,20 @@
 'use client';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
+import { CreateLoanRequest } from '@/services/CreateLoanRequest';
 
-export default function SolicitudPrestamo() {
-  const [formData, setFormData] = useState({
-    montoOferta: '',
-    tasaInteres: '',
-    plazo: '',
-    proposito: '',
-  });
-
-  const [habilitado, setHabilitado] = useState(true);
-  const [ultimaActualizacion, setUltimaActualizacion] = useState('2024-10-31');
-  const [constanciaBancaria, setConstanciaBancaria] = useState(true);
+const SolicitudPrestamo = ({ onClose }) => {
+  const [montoOferta, setMontoOferta] = useState('');
+  const [tasaInteres, setTasaInteres] = useState('');
+  const [plazo, setPlazo] = useState('');
+  const [proposito, setProposito] = useState('');
+  const [habilitado] = useState(true);
 
   const router = useRouter();
+  const usuarioId = 70; // ID de usuario predeterminado
 
-  const handleInputChange = (e) => {
-    const { id, value } = e.target;
-    setFormData({
-      ...formData,
-      [id]: value,
-    });
-  };
-
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!habilitado) {
@@ -33,190 +22,115 @@ export default function SolicitudPrestamo() {
       return;
     }
 
-    toast.success('Se realizó su solicitud correctamente!!!');
+    const loanRequestData = {
+      monto: parseFloat(montoOferta),
+      tasa: parseFloat(tasaInteres),
+      plazo: parseInt(plazo, 10),
+      estado_aprobacionid: 1,
+      tipo_prestamoid: parseInt(proposito, 10),
+      usuarioId: usuarioId,
+    };
 
-    setTimeout(() => {
-      router.push('/inicio/prestatario');
-    }, 4000);
+    console.log("JSON generado para CreateLoanRequest:", loanRequestData);
+
+    try {
+      const response = await CreateLoanRequest(loanRequestData);
+      console.log("Respuesta del servidor:", response);
+
+      toast.success('Se realizó su solicitud correctamente!!!');
+      setTimeout(() => {
+        router.push('/inicio/prestatario');
+      }, 4000);
+      if (onClose) onClose();
+    } catch (error) {
+      console.error("Error en CreateLoanRequest:", error);
+      toast.error(`Error al enviar la solicitud: ${error.message}`);
+    }
   };
 
   return (
-    <div className="bg-gray-100 p-6 lg:p-10 lg:pt-16 shadow-lg rounded-2xl w-full max-w-7xl mx-auto text-custom-gray">
-      <div
-        className="bg-gradient-to-br from-custom-orange-light to-custom-orange-dark rounded-2xl p-8"
-        style={{ padding: '1rem' }}
-      >
-        <div className="bg-white rounded-xl p-8 shadow-lg h-full">
-          <h2 className="text-3xl font-semibold text-gray-800 mb-8 text-center lg:text-left">
-            Solicitud de Préstamo
-          </h2>
+    <form className="flex flex-col p-4 bg-white rounded shadow-lg w-full max-w-md mx-auto" onSubmit={handleSubmit}>
+      <h2 className="text-lg font-semibold text-center mb-4 text-gray-800">
+        Solicitud de Préstamo
+      </h2>
 
-          <div className="mb-8 lg:flex lg:space-x-8">
-            {/* Detalles del Prestatario */}
-            <div className="lg:w-1/3">
-              <h3 className="text-xl font-semibold text-gray-800 mb-4">Detalles del Prestatario</h3>
-              <div className="space-y-4">
-                <p><strong>Nombre:</strong> Juan Pérez</p>
-                <p><strong>Documento:</strong> 1234-5678-9012</p>
-                <p><strong>Correo:</strong> juan.perez@ejemplo.com</p>
-                <p><strong>Teléfono:</strong> +1 234 567 8901</p>
-              </div>
-              
-              {/* Estado de Habilitación */}
-              <div className="mt-6 p-6 border rounded-lg shadow-lg bg-gray-50">
-                <div className="flex items-center">
-                  <span className={`text-3xl ${habilitado ? 'text-green-600' : 'text-red-600'}`}>
-                    {habilitado ? '✔️' : '❌'}
-                  </span>
-                  <p className="font-semibold text-lg ml-4">Estado de Habilitación</p>
-                </div>
-                <p className={`mt-4 font-bold text-xl ${habilitado ? 'text-green-600' : 'text-red-600'}`}>
-                  {habilitado ? 'Habilitado para solicitar préstamo' : 'No habilitado para solicitar préstamo'}
-                </p>
-                <p className="mt-2 text-sm text-gray-500">
-                  {habilitado
-                    ? 'Usted cumple con los requisitos para realizar esta solicitud.'
-                    : 'Debe cumplir con los requisitos para poder solicitar el préstamo.'}
-                </p>
-              </div>
-
-              {/* Constancia Bancaria */}
-              <div className="mt-6 p-6 border rounded-lg shadow-lg bg-gray-50">
-                <div className="flex items-center">
-                  <span className={`text-3xl ${constanciaBancaria ? 'text-green-600' : 'text-yellow-500'}`}>
-                    {constanciaBancaria ? '✔️' : '⚠️'}
-                  </span>
-                  <p className="font-semibold text-lg ml-4">Constancia Bancaria</p>
-                </div>
-                <p className={`mt-4 font-bold text-xl ${constanciaBancaria ? 'text-green-600' : 'text-yellow-500'}`}>
-                  {constanciaBancaria ? 'Constancia válida' : 'Constancia no válida'}
-                </p>
-                <p className="mt-2 text-sm text-gray-500">
-                  {constanciaBancaria
-                    ? 'Su constancia bancaria cumple con los requisitos vigentes.'
-                    : 'Por favor, actualice su constancia bancaria.'}
-                </p>
-                <p className="mt-2 text-sm text-gray-600">
-                  Última actualización: <span className="font-medium">{ultimaActualizacion}</span>
-                </p>
-              </div>
-            </div>
-
-            {/* Formulario de Solicitud */}
-            <div className="flex-1 mt-10 lg:mt-0">
-              <h3 className="text-2xl font-semibold text-gray-800 mb-6 text-center lg:text-left">
-                Ingrese sus condiciones para este préstamo
-              </h3>
-              <form className="space-y-6" onSubmit={handleSubmit}>
-                {/* Monto de la oferta */}
-                <div>
-                  <label htmlFor="montoOferta" className="block text-lg font-semibold text-gray-800 mb-2">
-                    Monto de la Oferta:
-                  </label>
-                  <input
-                    id="montoOferta"
-                    type="number"
-                    placeholder="Ingrese monto de la oferta"
-                    className="w-full p-4 rounded-full bg-gray-100 text-gray-700 shadow-md focus:outline-none focus:ring-2 focus:ring-orange-500"
-                    value={formData.montoOferta}
-                    onChange={handleInputChange}
-                    required
-                  />
-                </div>
-
-                {/* Tasa de interés */}
-                <div>
-                  <label htmlFor="tasaInteres" className="block text-lg font-semibold text-gray-800 mb-2">
-                    Tasa de Interés (%):
-                  </label>
-                  <input
-                    id="tasaInteres"
-                    type="number"
-                    placeholder="Ingrese la tasa de interés"
-                    className="w-full p-4 rounded-full bg-gray-100 text-gray-700 shadow-md focus:outline-none focus:ring-2 focus:ring-orange-500"
-                    value={formData.tasaInteres}
-                    onChange={handleInputChange}
-                    required
-                  />
-                </div>
-
-                {/* Plazo en meses */}
-                <div>
-                  <label htmlFor="plazo" className="block text-lg font-semibold text-gray-800 mb-2">
-                    Plazo (meses):
-                  </label>
-                  <input
-                    id="plazo"
-                    type="number"
-                    placeholder="Ingrese plazo en meses"
-                    className="w-full p-4 rounded-full bg-gray-100 text-gray-700 shadow-md focus:outline-none focus:ring-2 focus:ring-orange-500"
-                    value={formData.plazo}
-                    onChange={handleInputChange}
-                    required
-                  />
-                </div>
-
-                {/* Propósito del préstamo */}
-                <div>
-                  <label htmlFor="proposito" className="block text-lg font-semibold text-gray-800 mb-2">
-                    Propósito:
-                  </label>
-                  <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
-                    <button
-                      type="button"
-                      className="flex flex-col items-center p-4 border rounded-full shadow-md hover:bg-gray-200"
-                      onClick={() => setFormData({ ...formData, proposito: 'vivienda' })}
-                    >
-                      <span className="text-3xl">🏠</span>
-                      <span>Vivienda</span>
-                    </button>
-                    <button
-                      type="button"
-                      className="flex flex-col items-center p-4 border rounded-full shadow-md hover:bg-gray-200"
-                      onClick={() => setFormData({ ...formData, proposito: 'estudios' })}
-                    >
-                      <span className="text-3xl">📚</span>
-                      <span>Estudios</span>
-                    </button>
-                    <button
-                      type="button"
-                      className="flex flex-col items-center p-4 border rounded-full shadow-md hover:bg-gray-200"
-                      onClick={() => setFormData({ ...formData, proposito: 'negocios' })}
-                    >
-                      <span className="text-3xl">💼</span>
-                      <span>Negocios</span>
-                    </button>
-                    <button
-                      type="button"
-                      className="flex flex-col items-center p-4 border rounded-full shadow-md hover:bg-gray-200"
-                      onClick={() => setFormData({ ...formData, proposito: 'otros' })}
-                    >
-                      <span className="text-3xl">🔧</span>
-                      <span>Otros</span>
-                    </button>
-                  </div>
-                </div>
-
-                {/* Botón de Enviar Solicitud */}
-                <div className="col-span-full flex justify-center mt-10">
-                  <button
-                    type="submit"
-                    className="w-full lg:w-1/3 py-4 text-white font-bold rounded-full transition-transform transform hover:scale-105 shadow-lg"
-                    style={{
-                      background: 'linear-gradient(145deg, #FF8E53, #FF6A00)',
-                      boxShadow: 'inset 0px 1px 3px rgba(255,255,255,0.2), 0px 4px 12px rgba(0, 0, 0, 0.3)',
-                    }}
-                  >
-                    Enviar Solicitud
-                  </button>
-                </div>
-              </form>
-            </div>
-          </div>
-        </div>
+      <div className="relative mb-6">
+        <label htmlFor="montoOferta" className="block text-xs font-semibold text-custom-gray mb-4">
+          Monto de la Oferta:
+        </label>
+        <input
+          id="montoOferta"
+          type="number"
+          value={montoOferta}
+          onChange={(e) => setMontoOferta(e.target.value)}
+          placeholder="Ingrese monto de la oferta"
+          className="w-full p-4 mt-1 rounded-md bg-custom-fondoInput text-custom-gray"
+          required
+          style={{ boxShadow: '0 1px 10px rgba(0, 0, 0, 0.2)' }}
+        />
       </div>
-    </div>
+
+      <div className="relative mb-6">
+        <label htmlFor="tasaInteres" className="block text-xs font-semibold text-custom-gray mb-4">
+          Tasa de Interés (%):
+        </label>
+        <input
+          id="tasaInteres"
+          type="number"
+          value={tasaInteres}
+          onChange={(e) => setTasaInteres(e.target.value)}
+          placeholder="Ingrese la tasa de interés"
+          className="w-full p-4 mt-1 rounded-md bg-custom-fondoInput text-custom-gray"
+          required
+          style={{ boxShadow: '0 1px 10px rgba(0, 0, 0, 0.2)' }}
+        />
+      </div>
+
+      <div className="relative mb-6">
+        <label htmlFor="plazo" className="block text-xs font-semibold text-custom-gray mb-4">
+          Plazo (meses):
+        </label>
+        <input
+          id="plazo"
+          type="number"
+          value={plazo}
+          onChange={(e) => setPlazo(e.target.value)}
+          placeholder="Ingrese plazo en meses"
+          className="w-full p-4 mt-1 rounded-md bg-custom-fondoInput text-custom-gray"
+          required
+          style={{ boxShadow: '0 1px 10px rgba(0, 0, 0, 0.2)' }}
+        />
+      </div>
+
+      <div className="relative mb-6">
+        <label htmlFor="proposito" className="block text-xs font-semibold text-custom-gray mb-4">
+          Propósito:
+        </label>
+        <select
+          id="proposito"
+          value={proposito}
+          onChange={(e) => setProposito(e.target.value)}
+          className="w-full p-4 mt-1 rounded-md bg-custom-fondoInput text-custom-gray"
+          required
+          style={{ boxShadow: '0 1px 10px rgba(0, 0, 0, 0.2)' }}
+        >
+          <option value="">Seleccione el propósito</option>
+          <option value="1">Préstamo Hipotecario</option>
+          <option value="2">Préstamo Personal</option>
+          <option value="3">Préstamo Vehicular</option>
+          <option value="4">Préstamo Educativo</option>
+        </select>
+      </div>
+
+      <button
+        type="submit"
+        className="w-full py-4 px-3 text-white rounded-md font-bold bg-custom-orange"
+        style={{ boxShadow: '0 1px 10px rgba(0, 0, 0, 0.7)' }}
+      >
+        Enviar Solicitud
+      </button>
+    </form>
   );
-}
+};
 
-
+export default SolicitudPrestamo;
