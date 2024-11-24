@@ -1,8 +1,9 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 import { CreateLoanRequest } from '@/services/CreateLoanRequest';
+import { jwtDecode } from 'jwt-decode';
 
 const SolicitudPrestamo = ({ onClose }) => {
   const [montoOferta, setMontoOferta] = useState('');
@@ -10,9 +11,27 @@ const SolicitudPrestamo = ({ onClose }) => {
   const [plazo, setPlazo] = useState('');
   const [proposito, setProposito] = useState('');
   const [habilitado] = useState(true);
+  const [usuarioId, setUsuarioId] = useState(''); // Estado para guardar el ID del usuario
+  const [userName, setUserName] = useState('');
 
   const router = useRouter();
-  const usuarioId = 70; // ID de usuario predeterminado
+
+  // Obtener y decodificar el token al montar el componente
+  useEffect(() => {
+    const token = localStorage.getItem('token'); // Suponiendo que el token está en localStorage
+    if (token) {
+      try {
+        const decodedTokend = jwtDecode(token);
+        setUserName(
+          `${decodedTokend.UsuarioID}`
+        );
+      } catch (error) {
+        console.error("error al decodificador el token", error);
+      }
+    } else {
+      toast.error('Token no encontrado');
+    }
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -21,14 +40,16 @@ const SolicitudPrestamo = ({ onClose }) => {
       toast.error('No está habilitado para realizar la solicitud.');
       return;
     }
+    console.log(userName);
+
 
     const loanRequestData = {
       monto: parseFloat(montoOferta),
       tasa: parseFloat(tasaInteres),
       plazo: parseInt(plazo, 10),
-      estado_aprobacionid: 1,
+      estado_aprobacionid: 2,
       tipo_prestamoid: parseInt(proposito, 10),
-      usuarioId: usuarioId,
+      usuarioId: parseInt(userName, 10),
     };
 
     console.log("JSON generado para CreateLoanRequest:", loanRequestData);

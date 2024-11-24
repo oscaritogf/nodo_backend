@@ -5,9 +5,9 @@ import { jwtDecode } from "jwt-decode";
 
 const Header = ({ toggleSidebar, isSidebarOpen, title, userImage }) => {
   const [userName, setUserName] = useState("");
-
   useEffect(() => {
     const token = localStorage.getItem("token");
+
     if (token) {
       try {
         const decodedTokend = jwtDecode(token);
