@@ -3,28 +3,31 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { FaUserCircle, FaMoneyBillAlt, FaPercentage, FaCalendarAlt, FaBuilding, FaChartLine } from 'react-icons/fa';
+import { FetchLoanDetails } from '@/services/FetchLoanDetails';
 
-const loansData = [
-  { id: 1, name: 'Junior Steven Garcia', amount: '2,000 L', interest: '3%', term: '12 meses', type: 'Personal', age: 24, occupation: 'Ing. Sistemas', monthlyIncome: '$25,000', creditHistory: 'Bueno', purpose: 'Negocio' },
-  { id: 2, name: 'Juan Andree Castillo', amount: '800 L', interest: '6%', term: '6 meses', type: 'Vehicular', age: 30, occupation: 'Doctor', monthlyIncome: '$18,000', creditHistory: 'Aceptable', purpose: 'Vehículo' },
-];
-
-export default function LoanDetail({ params }) {
+export default function LoanDetail({ params: paramsPromise }) {
   const [loan, setLoan] = useState(null);
   const [isOn, setIsOn] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
-    async function fetchParams() {
-      const resolvedParams = await params;
-      const loanId = parseInt(resolvedParams.id, 10);
-      const loanData = loansData.find((loan) => loan.id === loanId);
-      setLoan(loanData);
-    }
-    fetchParams();
-  }, [params]);
+    const fetchLoan = async () => {
+      try {
+        const params = await paramsPromise; // Desenrollar el Promise de `params`
+        const loanId = parseInt(params.id, 10); // Extraer el ID de los parámetros
+        const loanData = await FetchLoanDetails(loanId); // Llamar al servicio con el ID
+        setLoan(loanData); // Guardar los datos del préstamo en el estado
+      } catch (error) {
+        console.error('Error al obtener los detalles del préstamo:', error);
+      }
+    };
 
-  if (!loan) return <p className="text-center text-gray-600">Cargando datos del préstamo...</p>;
+    fetchLoan();
+  }, [paramsPromise]);
+
+  if (!loan) {
+    return <p className="text-center text-gray-600">Cargando datos del préstamo...</p>;
+  }
 
   const toggleSwitch = () => {
     setIsOn(!isOn);
@@ -32,7 +35,7 @@ export default function LoanDetail({ params }) {
 
   const handleButtonClick = () => {
     if (isOn) {
-      router.push(`http://localhost:3000/inicio/prestamista/solicitudes/${loan.id}/oferta`);
+      router.push(`http://localhost:3000/inicio/prestamista/solicitudes/${loan.SolicitudID}/oferta`);
     } else {
       alert("Solicitud aceptada");
     }
@@ -44,36 +47,36 @@ export default function LoanDetail({ params }) {
         <h3 className="text-lg font-semibold mb-4 text-gray-700 text-center">Información del Solicitante</h3>
         <div className="grid grid-cols-2 gap-4 text-gray-700">
           <p className="font-semibold">Nombre:</p>
-          <p className="text-right">{loan.name}</p>
+          <p className="text-right">{loan.NombreUsuario || 'Desconocido'}</p>
           <p className="font-semibold">Edad:</p>
-          <p className="text-right">{loan.age} años</p>
+          <p className="text-right">{loan.EdadUsuario} años</p>
           <p className="font-semibold">Ocupación:</p>
-          <p className="text-right">{loan.occupation}</p>
+          <p className="text-right">{loan.OcupacionUsuario || 'No especificada'}</p>
           <p className="font-semibold">Ingresos mensuales:</p>
-          <p className="text-right">{loan.monthlyIncome}</p>
+          <p className="text-right">{loan.Ingresos_Mensuales || 'No especificados'}</p>
           <p className="font-semibold">Historial crediticio:</p>
-          <p className={`${loan.creditHistory === 'Bueno' ? 'text-green-600' : 'text-yellow-600'} text-right`}>{loan.creditHistory}</p>
+          <p className="text-right text-yellow-600">No disponible</p>
         </div>
       </div>
 
       <div className="bg-white rounded-lg shadow-md p-8 w-full border border-gray-200">
-        <h2 className="text-xl font-semibold mb-3 text-gray-700 text-center">Solicitud #{loan.id}</h2>
+        <h2 className="text-xl font-semibold mb-3 text-gray-700 text-center">Solicitud #{loan.SolicitudID}</h2>
         <div className="grid grid-cols-2 gap-4 text-gray-700">
           <div className="flex items-center">
             <FaMoneyBillAlt className="mr-2 text-gray-600" />
             <span className="font-semibold">Monto Solicitado:</span>
           </div>
-          <p className="text-right">{loan.amount}</p>
+          <p className="text-right">{loan.Monto} L</p>
           <div className="flex items-center">
             <FaPercentage className="mr-2 text-gray-600" />
             <span className="font-semibold">Tasa de Interés:</span>
           </div>
-          <p className="text-right">{loan.interest}</p>
+          <p className="text-right">{loan.Tasa}%</p>
           <div className="flex items-center">
             <FaCalendarAlt className="mr-2 text-gray-600" />
             <span className="font-semibold">Plazo:</span>
           </div>
-          <p className="text-right">{loan.term}</p>
+          <p className="text-right">{loan.Plazo} meses</p>
           <div className="flex items-center">
             <FaChartLine className="mr-2 text-gray-600" />
             <span className="font-semibold">Riesgo:</span>
@@ -83,7 +86,7 @@ export default function LoanDetail({ params }) {
             <FaBuilding className="mr-2 text-gray-600" />
             <span className="font-semibold">Propósito:</span>
           </div>
-          <p className="text-right">{loan.purpose}</p>
+          <p className="text-right">{loan.TipoPrestamo}</p>
           <span className="font-semibold">Oferta:</span>
           <div className="flex justify-end">
             <div
@@ -107,5 +110,3 @@ export default function LoanDetail({ params }) {
     </div>
   );
 }
-
-
