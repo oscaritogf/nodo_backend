@@ -3,7 +3,8 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { FaSearch, FaUserCircle } from 'react-icons/fa';
-import { GetPendingLoans } from '@/services/GetPendingLoans';
+import { GetPendingLoansByUserId } from '@/services/GetPendingLoansByUserId';
+import { jwtDecode } from 'jwt-decode'; // Asegúrate de tener esta librería instalada
 
 export default function LoanListMobile() {
   const [loans, setLoans] = useState([]);
@@ -13,24 +14,42 @@ export default function LoanListMobile() {
   const [filterTerm, setFilterTerm] = useState('');
   const [filterInterest, setFilterInterest] = useState('');
   const [loading, setLoading] = useState(true);
-
+  const [userName, setUserName] = useState('');
+  const [userId, setUserId] = useState(null); // Usamos un estado para almacenar el userId
   const itemsPerPage = 6;
 
+  // Obtener y decodificar el token al montar el componente
   useEffect(() => {
-    const loadLoans = async () => {
-      setLoading(true);
+    const token = localStorage.getItem('token'); // Suponiendo que el token está en localStorage
+    if (token) {
       try {
-        const data = await GetPendingLoans();
-        setLoans(data);
+        const decodedToken = jwtDecode(token);
+        setUserId(decodedToken.UsuarioID); // Guardamos el userId del token
       } catch (error) {
-        console.error('Error fetching loans:', error);
-      } finally {
-        setLoading(false);
+        console.error("Error al decodificar el token", error);
       }
-    };
-
-    loadLoans();
+    } else {
+      toast.error('Token no encontrado');
+    }
   }, []);
+
+  useEffect(() => {
+    if (userId !== null) { // Solo hacemos la llamada si tenemos un userId
+      const loadLoans = async () => {
+        setLoading(true);
+        try {
+          const data = await GetPendingLoansByUserId(userId); // Llamada al servicio con el userId
+          setLoans(data);
+        } catch (error) {
+          console.error('Error fetching loans:', error);
+        } finally {
+          setLoading(false);
+        }
+      };
+
+      loadLoans();
+    }
+  }, [userId]); // Ejecutamos este efecto cada vez que el userId cambie
 
   // Filtro de búsqueda
   let filteredLoans = loans.filter((loan) =>
@@ -174,7 +193,7 @@ export default function LoanListMobile() {
             key={index}
             className={`px-3 py-1 rounded-full ${
               currentPage === index + 1 ? 'bg-blue-500 text-white' : 'bg-gray-50 text-gray-700'
-            } shadow`}
+            }`}
             onClick={() => handlePageChange(index + 1)}
           >
             {index + 1}
