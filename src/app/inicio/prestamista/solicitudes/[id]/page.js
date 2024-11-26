@@ -35,7 +35,9 @@ export default function LoanDetail({ params: paramsPromise }) {
 
   const handleButtonClick = () => {
     if (isOn) {
-      router.push(`http://localhost:3000/inicio/prestamista/solicitudes/${loan.SolicitudID}/oferta`);
+      router.push(`http://localhost:3000/inicio/prestamista/solicitudes/${loan.SolicitudID}/oferta?solicitudId=${loan.SolicitudID}`);
+
+
     } else {
       alert("Solicitud aceptada");
     }
@@ -53,7 +55,7 @@ export default function LoanDetail({ params: paramsPromise }) {
           <p className="font-semibold">Ocupación:</p>
           <p className="text-right">{loan.OcupacionUsuario || 'No especificada'}</p>
           <p className="font-semibold">Ingresos mensuales:</p>
-          <p className="text-right">{loan.Ingresos_Mensuales || 'No especificados'}</p>
+          <p className="text-right"> L. { loan.Ingresos_Mensuales || 'No especificados'}</p>
           <p className="font-semibold">Historial crediticio:</p>
           <p className="text-right text-yellow-600">No disponible</p>
         </div>
