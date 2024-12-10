@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { FaSearch, FaUserCircle } from 'react-icons/fa';
 import { GetPendingLoansByUserId } from '@/services/GetPendingLoansByUserId';
-import { jwtDecode } from 'jwt-decode'; // Asegúrate de tener esta librería instalada
+import { jwtDecode } from 'jwt-decode'; 
 
 export default function LoanListMobile() {
   const [loans, setLoans] = useState([]);
