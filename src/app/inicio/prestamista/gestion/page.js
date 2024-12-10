@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { FaSearch, FaUserCircle } from 'react-icons/fa';
+import Link from 'next/link'; // Importamos Link
 
 const LoanManagementResponsive = () => {
   const [activeLoans, setActiveLoans] = useState([]);
@@ -14,15 +15,15 @@ const LoanManagementResponsive = () => {
 
   useEffect(() => {
     setActiveLoans([
-      { id: 1, name: 'Gabriela Patricia Sanchez', amount: 8000, interest: 3, term: 12, status: 'Aceptado' },
-      { id: 2, name: 'Ana Carolina Torres', amount: 1000, interest: 3, term: 6, status: 'Aceptado' },
-      { id: 3, name: 'Javier Eduardo Ramirez', amount: 2000, interest: 3, term: 24, status: 'Rechazado' },
+      { id: 1, name: 'Gabriela Patricia Sanchez', amount: 8000, interest: 3, term: 12 },
+      { id: 2, name: 'Ana Carolina Torres', amount: 1000, interest: 3, term: 6 },
+      { id: 3, name: 'Javier Eduardo Ramirez', amount: 2000, interest: 3, term: 24 },
     ]);
 
     setOfferedLoans([
-      { id: 4, name: 'Junior Steven Garcia', amount: 2000, interest: 3, term: 12 },
-      { id: 5, name: 'Juan Andree Castillo', amount: 800, interest: 6, term: 6 },
-      { id: 6, name: 'Sofia Valentina Gonzales', amount: 500, interest: 6.5, term: 18 },
+      { id: 4, name: 'Junior Steven Garcia', amount: 2000, interest: 3, term: 12, status: 'Aceptado' },
+      { id: 5, name: 'Juan Andree Castillo', amount: 800, interest: 6, term: 6, status: 'Rechazado' },
+      { id: 6, name: 'Sofia Valentina Gonzales', amount: 500, interest: 6.5, term: 18, status: 'Aceptado' },
     ]);
   }, []);
 
@@ -82,7 +83,6 @@ const LoanManagementResponsive = () => {
 
       {/* Filtros */}
       <div className="flex flex-col md:flex-row gap-2 mb-4">
-        
         <select
           className="flex-1 bg-white px-4 py-2 rounded-full shadow-md text-gray-700"
           value={filterAmount}
@@ -117,12 +117,13 @@ const LoanManagementResponsive = () => {
 
       {/* Toggle */}
       <div className="relative bg-gray-200 rounded-full p-1 mb-4">
+        {/* Deslizador del toggle */}
         <div
-          className={`absolute top-0 bottom-0 w-1/2 bg-white rounded-full shadow-md transition-transform duration-300 ${
+          className={`absolute top-1/2 transform -translate-y-1/2 left-0 h-4/5 w-1/2 bg-white rounded-full shadow-md transition-transform duration-300 ${
             isOnActiveLoans ? 'translate-x-0' : 'translate-x-full'
-          }`}
-        ></div>
-        <div className="flex justify-between">
+          }`}></div>
+        {/* Contenedor de los botones */}
+        <div className="flex justify-between relative z-10">
           <button
             onClick={handleToggle}
             className={`px-4 py-2 w-1/2 text-center transition-colors duration-300 ${
@@ -145,19 +146,26 @@ const LoanManagementResponsive = () => {
       {/* Lista de préstamos */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {filteredLoans.map((loan) => (
-          <div
+          <Link
             key={loan.id}
-            className="flex items-center bg-white p-4 rounded-lg shadow-md border cursor-pointer"
+            href={`/inicio/prestamista/gestion/${loan.id}`} // Redirige dinámicamente según el préstamo
           >
-            <FaUserCircle className="text-3xl text-gray-500 mr-4" />
-            <div className="flex-1">
-              <p className="font-semibold text-gray-700">{loan.name}</p>
-              <p className="text-gray-500">Monto: {loan.amount} L</p>
-              <p className="text-gray-500">Interés: {loan.interest}%</p>
-              <p className="text-gray-500">Plazo: {loan.term} meses</p>
-              {loan.status && <p className="text-green-500">{loan.status}</p>}
+            <div className="flex items-center bg-white p-4 rounded-lg shadow-md border cursor-pointer">
+              <FaUserCircle className="text-3xl text-gray-500 mr-4" />
+              <div className="flex-1">
+                <p className="font-semibold text-gray-700">{loan.name}</p>
+                <p className="text-gray-500">Monto: {loan.amount} L</p>
+                <p className="text-gray-500">Interés: {loan.interest}%</p>
+                <p className="text-gray-500">Plazo: {loan.term} meses</p>
+                {/* Mostrar el estado solo en ofertas */}
+                {offeredLoans.some((offeredLoan) => offeredLoan.id === loan.id) && (
+                  <p className={loan.status === 'Aceptado' ? 'text-green-500' : 'text-red-500'}>
+                    {loan.status}
+                  </p>
+                )}
+              </div>
             </div>
-          </div>
+          </Link>
         ))}
       </div>
     </div>
@@ -165,4 +173,3 @@ const LoanManagementResponsive = () => {
 };
 
 export default LoanManagementResponsive;
-
