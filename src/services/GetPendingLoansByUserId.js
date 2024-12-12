@@ -1,5 +1,5 @@
 import axios from 'axios';
-
+import settings from './settings';
 export async function GetPendingLoansByUserId(userId) {
     try {
         const response = await axios.get(`${settings.local}/loanRequest/obtener-solicitud-pendientes/${userId}`);

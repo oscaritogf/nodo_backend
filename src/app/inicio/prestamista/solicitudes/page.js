@@ -120,11 +120,10 @@ export default function LoanListMobile() {
           className="bg-transparent focus:outline-none ml-2 w-full text-gray-700 placeholder-gray-400"
         />
       </div>
-
-      {/* Filtros Dropdowns */}
-      <div className="flex gap-2 mb-4 w-full">
+      {/* Filtros */}
+      <div className="flex flex-col md:flex-row gap-2 mb-4">
         <select
-          className="flex-1 bg-gray-50 px-4 py-2 rounded-full text-gray-700 focus:outline-none shadow-md"
+          className="flex-1 bg-white px-4 py-2 rounded-full shadow-md text-gray-700"
           value={filterAmount}
           onChange={(e) => setFilterAmount(e.target.value)}
         >
@@ -133,20 +132,8 @@ export default function LoanListMobile() {
           <option value="2">1,001 L - 5,000 L</option>
           <option value="3">Más de 5,000 L</option>
         </select>
-
         <select
-          className="flex-1 bg-gray-50 px-4 py-2 rounded-full text-gray-700 focus:outline-none shadow-md"
-          value={filterTerm}
-          onChange={(e) => setFilterTerm(e.target.value)}
-        >
-          <option value="">Plazo</option>
-          <option value="1">Hasta 12 meses</option>
-          <option value="2">13 - 24 meses</option>
-          <option value="3">Más de 24 meses</option>
-        </select>
-
-        <select
-          className="flex-1 bg-gray-50 px-4 py-2 rounded-full text-gray-700 focus:outline-none shadow-md"
+          className="flex-1 bg-white px-4 py-2 rounded-full shadow-md text-gray-700"
           value={filterInterest}
           onChange={(e) => setFilterInterest(e.target.value)}
         >
@@ -154,6 +141,16 @@ export default function LoanListMobile() {
           <option value="1">Hasta 4%</option>
           <option value="2">4.1% - 6%</option>
           <option value="3">Más de 6%</option>
+        </select>
+        <select
+          className="flex-1 bg-white px-4 py-2 rounded-full shadow-md text-gray-700"
+          value={filterTerm}
+          onChange={(e) => setFilterTerm(e.target.value)}
+        >
+          <option value="">Plazo</option>
+          <option value="1">Hasta 12 meses</option>
+          <option value="2">13 - 24 meses</option>
+          <option value="3">Más de 24 meses</option>
         </select>
       </div>
 
