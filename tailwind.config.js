@@ -11,7 +11,7 @@ module.exports = {
         background: "var(--background)",
         foreground: "var(--foreground)",
         'custom-gray': '#27403D',
-        'custom-fond': '#F3F4F6',
+        'custom-fond': '#27403D',
         'custom-fondoInput': '#FAFAFA',
         'custom-orange-light': '#FF701F',
         'custom-orange': '#FC7B32',

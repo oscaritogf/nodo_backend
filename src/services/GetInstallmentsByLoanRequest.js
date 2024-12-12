@@ -3,13 +3,12 @@ import settings from './settings';
 
 export async function GetInstallmentsByLoanRequest(solicitudId) {
     try {
-        const response = await axios.get(`http://localhost:8000/api/loanRequest/obtener-cuotas/${solicitudId}`, {
+        const response = await axios.get(`${settings.local}/loanRequest/obtener-cuotas/${solicitudId}`, {
             headers: {
                 'Content-Type': 'application/json',
             },
         });
 
-        // Verificación de que la respuesta contiene datos
         if (response.data) {
             return response.data;
         } else {

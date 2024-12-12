@@ -12,7 +12,7 @@ const ClientLayout = ({ children }) => {
   const router = useRouter();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [title, setTitle] = useState('Inicio');
-  const [userImage, setUserImage] = useState('/images/perfil_user.jpg');
+  const [userImage, setUserImage] = useState('/images/perfil.jpg');
   const [isDesktop, setIsDesktop] = useState(false);
   const [isTokenChecked, setIsTokenChecked] = useState(false);
   const [usuarioID, setUsuarioID] = useState(null);
@@ -61,27 +61,22 @@ const ClientLayout = ({ children }) => {
         setIsDesktop(false);
       }
     };
-
     handleResize();
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, [router]);
-
   const toggleSidebar = () => {
     if (!isDesktop) {
       setIsSidebarOpen(!isSidebarOpen);
     }
   };
-
   const handleSetTitle = (newTitle) => {
     setTitle(newTitle);
   };
-
   // Espera a que se verifique el token antes de renderizar
   if (!isTokenChecked) {
     return null;
   }
-
   return (
     <div className="min-h-screen flex flex-col bg-gray-900">
       <Toaster />
@@ -90,8 +85,6 @@ const ClientLayout = ({ children }) => {
           isSidebarOpen={isSidebarOpen}
           toggleSidebar={toggleSidebar}
           setTitle={handleSetTitle}
-
-
         />
         <div className={`flex-1 p-6 bg-gray-100 transition-all duration-300 ${isSidebarOpen ? 'lg:ml-64' : 'ml-0'} flex flex-col`}>
           <Header
@@ -113,6 +106,4 @@ const ClientLayout = ({ children }) => {
     </div>
   );
 };
-
 export default ClientLayout;
-
